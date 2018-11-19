@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +28,17 @@ public class FeedActivity extends AppCompatActivity {
 
             ContentResolver cr = getContentResolver();
 
+            Date monthStart = new Date();
+            monthStart.setDate(1);
+
+            long millis = monthStart.getTime();
+
+            String[] mSelectionArgs = {"body LIKE 'Absa%'", "date > " + monthStart};
+
             Cursor c = cr.query(Telephony.Sms.Inbox.CONTENT_URI, // Official CONTENT_URI from docs
-                    new String[] { Telephony.Sms.Inbox.BODY }, // Select body text
-                    null,
-                    null,
+                    new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
+                    "date > ? AND body LIKE ?",
+                    new String[] {"" + millis, "Absa%"},
                     Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
 
             int totalSMS = c.getCount();
@@ -45,7 +53,7 @@ public class FeedActivity extends AppCompatActivity {
             }
             c.close();
 
-            sms.setText(lstSms.get(0));
+            sms.setText(lstSms.get(totalSMS-1));
 
 
         }

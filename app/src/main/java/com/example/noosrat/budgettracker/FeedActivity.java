@@ -8,6 +8,8 @@ import android.provider.Telephony;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -22,7 +24,7 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         TextView sms =findViewById(R.id.textView);
-        List<String> lstSms = new ArrayList<String>();
+        ArrayList<String> lstSms = new ArrayList<String>();
 
         if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
@@ -53,7 +55,15 @@ public class FeedActivity extends AppCompatActivity {
             }
             c.close();
 
-            sms.setText(lstSms.get(totalSMS-1));
+            //sms.setText(lstSms.get(totalSMS-1));
+
+            RecyclerView rv = findViewById(R.id.recyclerView);
+
+            LinearLayoutManager llm = new LinearLayoutManager(FeedActivity.this);
+            rv.setLayoutManager(llm);
+            SMSAdapter adapter = new SMSAdapter(lstSms, FeedActivity.this);
+
+            rv.setAdapter(adapter);
 
 
         }

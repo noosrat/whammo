@@ -108,23 +108,23 @@ public class SMS {
 
                 message = message.substring(pos+2); //everything after recipient
 
-                pos = message.indexOf(",");
+                pos = message.indexOf(".")+3;
                 this.amount =  message.substring(0, pos); //amount
 
 
             }
             else if (this.transactionType == 1){
-                message = message.substring(pos); //everything after transaction type
+                message = message.substring(pos+2); //everything after transaction type
 
                 pos = message.indexOf(",");
-                message = message.substring(pos); //everything after other info we don't need
+                message = message.substring(pos+2); //everything after other info we don't need
 
                 pos = message.indexOf(",");
                 this.reciepient =  message.substring(0, pos); //recipient
 
-                message = message.substring(pos); //everything after recipient
+                message = message.substring(pos+2); //everything after recipient
 
-                pos = message.indexOf(",");
+                pos = message.indexOf(".")+3;
                 this.amount =  message.substring(0, pos); //amount
             }
             else if (this.transactionType == 2){
@@ -134,7 +134,7 @@ public class SMS {
 
                     message = message.substring(pos + "reserved".length()+1); //everything after recipient
 
-                    pos = message.indexOf(" ");
+                    pos = message.indexOf(".")+3;
                     this.amount = message.substring(0, pos); //amount
                 }
                 else

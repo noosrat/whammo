@@ -2,9 +2,9 @@ package com.example.noosrat.budgettracker;
 
 public class SMS {
 
-    String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO"};
-    String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
-    String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
+    public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "NOT DONE"};
+    public static String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
+    public static String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
 
     public String getAmount() {
         return amount;
@@ -16,6 +16,10 @@ public class SMS {
 
     public int getCard() {
         return card;
+    }
+
+    public int getTransactionType() {
+        return transactionType;
     }
 
     int transactionType;
@@ -76,11 +80,17 @@ public class SMS {
 
         pos = message.indexOf(","); //end of the card code
 
-        String card_code = message.substring(0, pos); //card code
+        String card_code;
+        if (pos > -1)
+            card_code = message.substring(0, pos); //card code
+
+        else
+            card_code = "";
+
         this.card = retrieveCard(card_code);
 
         if (this.card == 0) {
-            message = message.substring(pos); //everything after card code
+            message = message.substring(pos+2); //everything after card code
 
             pos = message.indexOf(","); //en of transaction type
 
@@ -118,21 +128,23 @@ public class SMS {
                 this.amount =  message.substring(0, pos); //amount
             }
             else if (this.transactionType == 2){
-                message = message.substring(pos); //everything after transaction type
+                pos = message.indexOf("reserved");
+                if (pos > -1) {
+                    this.reciepient = message.substring(9, pos); //recipient
 
-                pos = message.indexOf(",");
-                this.reciepient =  message.substring(0, pos); //recipient
+                    message = message.substring(pos + "reserved".length()+1); //everything after recipient
 
-                message = message.substring(pos); //everything after recipient
-
-                pos = message.indexOf(",");
-                this.amount =  message.substring(0, pos); //amount
+                    pos = message.indexOf(" ");
+                    this.amount = message.substring(0, pos); //amount
+                }
+                else
+                    this.transactionType = 4;
 
             }
         }
 
         else if (this.card == 1) {
-            message = message.substring(pos);
+            message = message.substring(pos+2);
 
             this.transactionType = 5;
             this.reciepient = "not done yet";
@@ -140,7 +152,6 @@ public class SMS {
         }
         else {
             this.transactionType = 4;
-            this.transactionType = 5;
             this.reciepient = "";
             this.amount = "";
         }

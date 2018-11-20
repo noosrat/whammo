@@ -41,7 +41,8 @@ public class SMSAdapter extends RecyclerView.Adapter<SMSAdapter.SMSViewHolder> {
 
         SMSViewHolder.txtSMS.setText((String) SMSArrayList.get(position).getMessage());
         SMSViewHolder.txtAmount.setText((String) SMSArrayList.get(position).getAmount());
-        SMSViewHolder.txtCard.setText(""+SMSArrayList.get(position).getCard());
+        SMSViewHolder.txtCard.setText(SMS.CARD_TYPES[SMSArrayList.get(position).getCard()] + "CARD");
+        SMSViewHolder.txtTransaction.setText(SMS.TRANSACTION_TYPES[SMSArrayList.get(position).getTransactionType()]);
         SMSViewHolder.txtRecipient.setText((String) SMSArrayList.get(position).getReciepient());
     }
 
@@ -62,6 +63,7 @@ public class SMSAdapter extends RecyclerView.Adapter<SMSAdapter.SMSViewHolder> {
         TextView txtAmount;
         TextView txtCard;
         TextView txtRecipient;
+        TextView txtTransaction;
 
         SMSViewHolder(View itemView) {
             super(itemView);
@@ -70,6 +72,7 @@ public class SMSAdapter extends RecyclerView.Adapter<SMSAdapter.SMSViewHolder> {
             txtAmount = (TextView) itemView.findViewById(R.id.amount);
             txtCard = (TextView) itemView.findViewById(R.id.card);
             txtRecipient = (TextView) itemView.findViewById(R.id.recipient);
+            txtTransaction = (TextView) itemView.findViewById(R.id.transaction);
         }
 
 

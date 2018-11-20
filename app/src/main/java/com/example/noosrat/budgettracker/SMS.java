@@ -55,10 +55,10 @@ public class SMS {
     }
 
     private int retrieveTransactionType(String transaction_type) {
-        if (transaction_type == "Pmnt") {
+        if (transaction_type.equals("Pmnt")) {
             return 0;
         }
-        else if (transaction_type == "Sch t"){
+        else if (transaction_type.equals("Sch t")){
             return 1;
         }
         else {
@@ -98,15 +98,15 @@ public class SMS {
             this.transactionType = retrieveTransactionType(transaction_type);
 
             if (this.transactionType == 0){
-                message = message.substring(pos); //everything after transaction type
+                message = message.substring(pos+2); //everything after transaction type
 
                 pos = message.indexOf(",");
-                message = message.substring(pos); //everything after other info we don't need
+                message = message.substring(pos+2); //everything after other info we don't need
 
                 pos = message.indexOf(",");
                 this.reciepient =  message.substring(0, pos); //recipient
 
-                message = message.substring(pos); //everything after recipient
+                message = message.substring(pos+2); //everything after recipient
 
                 pos = message.indexOf(",");
                 this.amount =  message.substring(0, pos); //amount

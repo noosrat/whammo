@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class SMSAdapter extends RecyclerView.Adapter<SMSAdapter.SMSViewHolder> {
 
     private final Context context;
-    ArrayList<String> SMSArrayList;
+    ArrayList<SMS> SMSArrayList;
 
-    public SMSAdapter(ArrayList<String> SMS, Context context) {
+    public SMSAdapter(ArrayList<SMS> SMS, Context context) {
         this.SMSArrayList = SMS;
         this.context = context;
     }
@@ -39,10 +39,10 @@ public class SMSAdapter extends RecyclerView.Adapter<SMSAdapter.SMSViewHolder> {
     @Override
     public void onBindViewHolder(final SMSViewHolder SMSViewHolder, final int position) {
 
-        SMSViewHolder.txtSMS.setText((String) SMSArrayList.get(position));
-        //SMSViewHolder.txtPartnerName.setText((String) SMSArrayList.get(position).getPartnerName());
-
-
+        SMSViewHolder.txtSMS.setText((String) SMSArrayList.get(position).getMessage());
+        SMSViewHolder.txtAmount.setText((String) SMSArrayList.get(position).getAmount());
+        SMSViewHolder.txtCard.setText(""+SMSArrayList.get(position).getCard());
+        SMSViewHolder.txtRecipient.setText((String) SMSArrayList.get(position).getReciepient());
     }
 
     @Override
@@ -59,15 +59,17 @@ public class SMSAdapter extends RecyclerView.Adapter<SMSAdapter.SMSViewHolder> {
     public static class SMSViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtSMS;
-        TextView txtPartnerName;
+        TextView txtAmount;
+        TextView txtCard;
+        TextView txtRecipient;
 
         SMSViewHolder(View itemView) {
             super(itemView);
 
             txtSMS = (TextView) itemView.findViewById(R.id.textView);
-            //txtSMSname = (TextView) itemView.findViewById(R.id.textView7);
-            //txtPartnerName = (TextView) itemView.findViewById(R.id.textView6);
-
+            txtAmount = (TextView) itemView.findViewById(R.id.amount);
+            txtCard = (TextView) itemView.findViewById(R.id.card);
+            txtRecipient = (TextView) itemView.findViewById(R.id.recipient);
         }
 
 

@@ -23,7 +23,8 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        TextView balance =findViewById(R.id.textView);
+        TextView txtBalance =findViewById(R.id.balance);
+        float balance = 0;
         ArrayList<SMS> lstSms = new ArrayList<SMS>();
 
         if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
@@ -48,8 +49,10 @@ public class FeedActivity extends AppCompatActivity {
             if (c.moveToFirst()) {
                 for (int i = 0; i < totalSMS; i++) {
                     SMS sms = new SMS(c.getString(0));
-                    if (sms.getTransactionType()!=4)
+                    if ((sms.getTransactionType()!=4) && (sms.getCard()!=2) && (sms.getTransactionType() != 3)) {
+                        balance = balance - Math.abs(Float.parseFloat (sms.getAmount().replace(",","").split("R")[1]));
                         lstSms.add(sms);
+                    }
                     c.moveToNext();
                 }
             } else {
@@ -69,5 +72,6 @@ public class FeedActivity extends AppCompatActivity {
 
 
         }
+        txtBalance.setText(balance + "");
     }
 }

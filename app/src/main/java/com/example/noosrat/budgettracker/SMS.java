@@ -2,7 +2,7 @@ package com.example.noosrat.budgettracker;
 
 public class SMS {
 
-    public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "NOT DONE"};
+    public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "PURCHASE"};
     public static String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
     public static String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
 
@@ -61,6 +61,12 @@ public class SMS {
         else if (transaction_type.equals("Sch t")){
             return 1;
         }
+        else if (transaction_type.equals("Dep")){
+            return 3;
+        }
+        else if (transaction_type.equals("Pur")){
+            return 5;
+        }
         else {
             return 2;
         }
@@ -97,7 +103,7 @@ public class SMS {
             String transaction_type = message.substring(0, pos); //transaction type
             this.transactionType = retrieveTransactionType(transaction_type);
 
-            if (this.transactionType == 0){
+            if ((this.transactionType == 0) || (this.transactionType == 5)){
                 message = message.substring(pos+2); //everything after transaction type
 
                 pos = message.indexOf(",");
@@ -132,9 +138,9 @@ public class SMS {
                 if (pos > -1) {
                     this.reciepient = message.substring(9, pos); //recipient
 
-                    message = message.substring(pos + "reserved".length()+1); //everything after recipient
+                    message = message.substring(pos + "reserved".length() + 1); //everything after recipient
 
-                    pos = message.indexOf(".")+3;
+                    pos = message.indexOf(".") + 3;
                     this.amount = message.substring(0, pos); //amount
                 }
                 else
@@ -151,7 +157,7 @@ public class SMS {
             String transaction_type = message.substring(0, pos); //transaction type
             this.transactionType = retrieveTransactionType(transaction_type);
 
-            if (this.transactionType == 2){
+            if (this.transactionType == 5){
 
                 message = message.substring(pos+2); //everything after transaction type
 

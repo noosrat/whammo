@@ -23,7 +23,7 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        TextView sms =findViewById(R.id.textView);
+        TextView balance =findViewById(R.id.textView);
         ArrayList<SMS> lstSms = new ArrayList<SMS>();
 
         if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
@@ -47,7 +47,9 @@ public class FeedActivity extends AppCompatActivity {
 
             if (c.moveToFirst()) {
                 for (int i = 0; i < totalSMS; i++) {
-                    lstSms.add(new SMS(c.getString(0)));
+                    SMS sms = new SMS(c.getString(0));
+                    if (sms.getTransactionType()!=4)
+                        lstSms.add(sms);
                     c.moveToNext();
                 }
             } else {

@@ -73,7 +73,7 @@ public class SMS {
     }
 
 
-    public void calculateAll(){
+    private void calculateAll(){
 
         int pos = this.originalMessage.indexOf(":");
         String message = this.originalMessage.substring(pos+2);
@@ -144,11 +144,30 @@ public class SMS {
         }
 
         else if (this.card == 1) {
-            message = message.substring(pos+2);
+            message = message.substring(pos+2); //everything after card code
 
-            this.transactionType = 5;
-            this.reciepient = "not done yet";
-            this.amount = "not done yet";
+            pos = message.indexOf(","); //end of transaction type
+
+            String transaction_type = message.substring(0, pos); //transaction type
+            this.transactionType = retrieveTransactionType(transaction_type);
+
+            if (this.transactionType == 2){
+
+                message = message.substring(pos+2); //everything after transaction type
+
+                pos = message.indexOf(",");
+                message = message.substring(pos+2); //everything after other info we don't need
+
+                pos = message.indexOf(",");
+                this.reciepient =  message.substring(0, pos); //recipient
+
+                message = message.substring(pos+2); //everything after recipient
+
+                pos = message.indexOf(".")+3;
+                this.amount =  message.substring(0, pos); //amount
+
+            }
+
         }
         else {
             this.transactionType = 4;

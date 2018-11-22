@@ -67,8 +67,8 @@ public class SpentUtilities {
 
         Cursor c = cr.query(uri, // Official CONTENT_URI from docs
                 new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
-                "date > ? AND body LIKE ?",
-                new String[] {"" + millis, banks[0] + "%"},
+                "date > ? AND (body LIKE ? OR body LIKE ?)",
+                new String[] {"" + millis, banks[1] + "%", banks[0] + "%"},
                 Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
 
         int totalSMS = c.getCount();
@@ -92,7 +92,7 @@ public class SpentUtilities {
             return lstSms;
     }
 
-    public static float calculateExpenses(ArrayList<SMS> transactionList){
+    public static float calculateExpenses(ArrayList<Transaction> transactionList){
 
         float sum = 0;
 
@@ -103,13 +103,13 @@ public class SpentUtilities {
         return 0;
     }
 
-    public ArrayList<SMS> SMStoTransaction(ArrayList<String> smsList){
+    public ArrayList<Transaction> SMStoTransaction(ArrayList<String> smsList){
 
-        ArrayList<SMS> lstSms = new ArrayList<>();
+        ArrayList<Transaction> lstSms = new ArrayList<>();
 
 
         for (int i = 0; i < smsList.size(); i++) {
-            SMS sms = new SMS(smsList.get(i));
+            Transaction sms = new Transaction(smsList.get(i));
             if ((sms.getTransactionType() != 3) && (sms.getTransactionType() != 1)) {
                 lstSms.add(sms);
 

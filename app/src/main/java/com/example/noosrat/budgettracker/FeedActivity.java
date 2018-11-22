@@ -26,13 +26,13 @@ public class FeedActivity extends AppCompatActivity {
         TextView txtBalance =findViewById(R.id.balance);
         float balance = 0;
 
-        ArrayList<SMS> transactionList = new ArrayList<>();
+        ArrayList<Transaction> transactionList = new ArrayList<>();
 
         if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
             ContentResolver cr = getContentResolver();
 
-            String[] banks = {"ABSA"};
+            String[] banks = {"ABSA", "FNB"};
 
             ArrayList<String> smsLst = SpentUtilities.getSMSes(banks, new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
 
@@ -45,11 +45,11 @@ public class FeedActivity extends AppCompatActivity {
 
                         for (int m = 0; m < bundledSMSes.length; m++) {
 
-                            transactionList.add(new SMS(bundledSMSes[m]));
+                            transactionList.add(new Transaction(bundledSMSes[m]));
                         }
                     }
                     else{
-                        transactionList.add(new SMS(smsLst.get(k)));
+                        transactionList.add(new Transaction(smsLst.get(k)));
                     }
                 }
             }
@@ -59,7 +59,7 @@ public class FeedActivity extends AppCompatActivity {
 
             LinearLayoutManager llm = new LinearLayoutManager(FeedActivity.this);
             rv.setLayoutManager(llm);
-            SMSAdapter adapter = new SMSAdapter(transactionList, FeedActivity.this);
+            TransactionAdapter adapter = new TransactionAdapter(transactionList, FeedActivity.this);
 
             rv.setAdapter(adapter);
 

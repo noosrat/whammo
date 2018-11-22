@@ -25,48 +25,41 @@ public class FeedActivity extends AppCompatActivity {
 
         TextView txtBalance =findViewById(R.id.balance);
         float balance = 0;
-        ArrayList<SMS> lstSms = new ArrayList<SMS>();
+
+        ArrayList<SMS> transactionList = new ArrayList<>();
 
         if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
             ContentResolver cr = getContentResolver();
 
-            Date monthStart = new Date();
-            monthStart.setDate(1);
+            String[] banks = {"ABSA"};
 
-            long millis = monthStart.getTime();
+            ArrayList<String> smsLst = SpentUtilities.getSMSes(banks, new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
 
-            String[] mSelectionArgs = {"body LIKE 'Absa%'", "date > " + monthStart};
+            if (smsLst != null) {
 
-            Cursor c = cr.query(Telephony.Sms.Inbox.CONTENT_URI, // Official CONTENT_URI from docs
-                    new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
-                    "date > ? AND body LIKE ?",
-                    new String[] {"" + millis, "Absa%"},
-                    Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
 
-            int totalSMS = c.getCount();
+                for (int k = 0; k < smsLst.size(); k++) {
+                    if (SpentUtilities.isBundledSms(smsLst.get(k))) {
+                        String[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
 
-            if (c.moveToFirst()) {
-                for (int i = 0; i < totalSMS; i++) {
-                    SMS sms = new SMS(c.getString(0));
-                    if ((sms.getTransactionType()!=4) && (sms.getCard()!=2) && (sms.getTransactionType() != 3)) {
-                        balance = balance - Math.abs(Float.parseFloat (sms.getAmount().replace(",","").split("R")[1]));
-                        lstSms.add(sms);
+                        for (int m = 0; m < bundledSMSes.length; m++) {
+
+                            transactionList.add(new SMS(bundledSMSes[m]));
+                        }
                     }
-                    c.moveToNext();
+                    else{
+                        transactionList.add(new SMS(smsLst.get(k)));
+                    }
                 }
-            } else {
-                throw new RuntimeException("You have no SMS in Inbox");
             }
-            c.close();
 
-            //sms.setText(lstSms.get(totalSMS-1));
 
             RecyclerView rv = findViewById(R.id.recyclerView);
 
             LinearLayoutManager llm = new LinearLayoutManager(FeedActivity.this);
             rv.setLayoutManager(llm);
-            SMSAdapter adapter = new SMSAdapter(lstSms, FeedActivity.this);
+            SMSAdapter adapter = new SMSAdapter(transactionList, FeedActivity.this);
 
             rv.setAdapter(adapter);
 

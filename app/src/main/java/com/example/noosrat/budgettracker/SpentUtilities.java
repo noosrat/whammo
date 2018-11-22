@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class SpentUtilities {
 
-    public boolean isBundledSms(String sms){
+    public static boolean isBundledSms(String sms){
 
         int pos = sms.indexOf(":");
         String bank = sms.substring(0, pos);
@@ -31,7 +31,7 @@ public class SpentUtilities {
 
     }
 
-    public String[] smsCleaner(String message){
+    public static String[] smsCleaner(String message){
 
         int pos = message.indexOf(")"); //end of FNB:-)
         message = message.substring(pos+2);
@@ -53,7 +53,7 @@ public class SpentUtilities {
 
     }
     
-    public ArrayList<String> getSMSes(String[] banks, Date date, ContentResolver cr, Uri uri){
+    public static ArrayList<String> getSMSes(String[] banks, Date date, ContentResolver cr, Uri uri){
 
 
         ArrayList<String> lstSms = new ArrayList<String>();
@@ -92,7 +92,7 @@ public class SpentUtilities {
             return lstSms;
     }
 
-    public float calculateExpenses(ArrayList<SMS> transactionList){
+    public static float calculateExpenses(ArrayList<SMS> transactionList){
 
         float sum = 0;
 

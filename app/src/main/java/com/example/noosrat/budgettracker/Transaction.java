@@ -20,17 +20,30 @@ public class Transaction {
     public Transaction(String message) {
 
         this.message = message;
-        this.bank = message.substring(0, message.indexOf(":"));
+        int pos = message.indexOf(":");
+        if (pos>-1)
+            this.bank = message.substring(0, pos);
 
-        if (this.bank.toUpperCase().equals("ABSA")){
-            ABSA transaction = new ABSA(message);
+        if (this.bank != null){
+            if (this.bank.toUpperCase().equals("ABSA")){
+                ABSA transaction = new ABSA(message);
 
-            transactionType = transaction.getTransactionType();
-            amount = transaction.getAmount();
-            recipient = transaction.getReciepient();
-            card = transaction.getCard();
+                transactionType = transaction.getTransactionType();
+                amount = transaction.getAmount();
+                recipient = transaction.getReciepient();
+                card = transaction.getCard();
+            }
+            else{
+                FNB transaction = new FNB(message);
+
+                transactionType = transaction.getTransactionType();
+                amount = transaction.getAmount();
+                recipient = transaction.getReciepient();
+                card = transaction.getCard();
+            }
+
         }
-        else if (this.bank.toUpperCase().equals("FNB")){
+        else{
             FNB transaction = new FNB(message);
 
             transactionType = transaction.getTransactionType();
@@ -38,6 +51,8 @@ public class Transaction {
             recipient = transaction.getReciepient();
             card = transaction.getCard();
         }
+
+
 
 
     }

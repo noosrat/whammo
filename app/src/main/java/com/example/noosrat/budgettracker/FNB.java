@@ -58,8 +58,11 @@ public class FNB {
         else if (transaction_type.equals("paid")) {
             return 1;
         }
-        else {
+        else if (transaction_type.equals("withdrawn")){
             return 2;
+        }
+        else{
+            return 3;
         }
     }
 
@@ -72,6 +75,11 @@ public class FNB {
 
         int pos = 0;
         String message = this.originalMessage;
+
+        if (message.charAt(0) != 'R') {
+            pos = message.indexOf(")"); //end of FNB:-)
+            message = message.substring(pos+2);
+        }
 
 
         pos = message.indexOf(" "); //end of amount
@@ -106,16 +114,20 @@ public class FNB {
         else if (this.transactionType == 1){
             pos = message.indexOf("Eft. Ref.");
 
-            message = message.substring(pos+"Eft. Ref.".length()+2); //everything after transaction keyword
+            message = message.substring(pos+"Eft. Ref.".length()); //everything after transaction keyword
             pos = message.indexOf(".");
 
             this.reciepient = message.substring(0, pos); //recipient
 
         }
         else if (this.transactionType == 2){
+            this.reciepient = "CASH"; //recipient
+
+        }
+        else if (this.transactionType == 3){
             pos = message.indexOf("Ref.");
 
-            this.reciepient = message.substring(pos+"Ref.".length()+2); //recipient
+            this.reciepient = message.substring(pos+"Ref.".length()); //recipient
 
         }
 

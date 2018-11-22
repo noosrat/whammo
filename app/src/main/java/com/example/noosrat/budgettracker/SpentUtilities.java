@@ -19,7 +19,7 @@ public class SpentUtilities {
         int pos = sms.indexOf(":");
         String bank = sms.substring(0, pos);
 
-        if (bank.equals("FNB")){
+        if (bank.equals("FNB ")){
             int separator = sms.indexOf(";");
 
             if (separator>-1)
@@ -40,10 +40,10 @@ public class SpentUtilities {
         if (message.charAt(0) != 'R') {
 
             message = message.substring(message.indexOf(":")+2);
-            messages_list = message.split(";");
+            messages_list = message.split("; ");
             }
 
-            if (messages_list[messages_list.length-1].matches("Avail*")){
+            if (messages_list[messages_list.length-1].trim().startsWith("Avail")){
                 messages_list = Arrays.copyOfRange(messages_list, 0,messages_list.length-2);
             }
 
@@ -67,8 +67,8 @@ public class SpentUtilities {
 
         Cursor c = cr.query(uri, // Official CONTENT_URI from docs
                 new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
-                "date > ? AND (body LIKE ? OR body LIKE ?)",
-                new String[] {"" + millis, banks[1] + "%", banks[0] + "%"},
+                "date > ? AND body LIKE ?",
+                new String[] {"" + millis, banks[1] + "%"},
                 Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
 
         int totalSMS = c.getCount();

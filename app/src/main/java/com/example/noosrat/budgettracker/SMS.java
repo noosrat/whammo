@@ -10,6 +10,10 @@ public class SMS {
         return amount;
     }
 
+    public float getNumberAmount() {
+        return Math.abs(Float.parseFloat (amount.replace(",","").substring(1)));
+    }
+
     public String getReciepient() {
         return reciepient;
     }

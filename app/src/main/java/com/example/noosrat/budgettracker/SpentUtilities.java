@@ -60,7 +60,9 @@ public class SpentUtilities {
 
         Date monthStart = new Date();
         monthStart.setDate(1);
-        monthStart.setTime(0);
+        monthStart.setHours(0);
+        monthStart.setMinutes(0);
+        monthStart.setSeconds(0);
 
         long millis = monthStart.getTime();
 
@@ -103,21 +105,21 @@ public class SpentUtilities {
         return 0;
     }
 
-    public ArrayList<Transaction> SMStoTransaction(ArrayList<String> smsList){
-
-        ArrayList<Transaction> lstSms = new ArrayList<>();
-
-
-        for (int i = 0; i < smsList.size(); i++) {
-            Transaction sms = new Transaction(smsList.get(i));
-            if ((sms.getTransactionType() != 3) && (sms.getTransactionType() != 1)) {
-                lstSms.add(sms);
-
-            }
-        }
-
-        return lstSms;
-    }
+//    public ArrayList<Transaction> SMStoTransaction(ArrayList<String> smsList){
+//
+//        ArrayList<Transaction> lstSms = new ArrayList<>();
+//
+//
+//        for (int i = 0; i < smsList.size(); i++) {
+//            Transaction sms = new Transaction(smsList.get(i));
+//            if ((sms.getTransactionType() != 3) && (sms.getTransactionType() != 1)) {
+//                lstSms.add(sms);
+//
+//            }
+//        }
+//
+//        return lstSms;
+//    }
 
 
 }

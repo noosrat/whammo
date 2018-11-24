@@ -2,9 +2,18 @@ package com.example.noosrat.budgettracker;
 
 public class ABSA {
 
-    public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "PURCHASE"};
-    public static String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
-    public static String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
+    boolean TRANSACTION_TYPE_EFT = false;
+    boolean TRANSACTION_TYPE_DEBIT_ORDER = false;
+    boolean TRANSACTION_TYPE_PAYMENT = false;
+    boolean TRANSACTION_TYPE_DEPOSIT = false;
+    boolean TRANSACTION_TYPE_INFO = false;
+    boolean TRANSACTION_TYPE_PURCHASE = false;
+
+    boolean CARD_TYPE_DEBIT = false;
+    boolean CARD_TYPE_CREDIT = false;
+    boolean CARD_TYPE_NOCARD = false;
+
+    public static String[] CARD_CODES = {"CHEQ", "CCRD"};
 
     public String getAmount() {
         return amount;

@@ -41,8 +41,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         TransactionViewHolder.txtSMS.setText((String) TransactionArrayList.get(position).getMessage());
         TransactionViewHolder.txtAmount.setText((String) TransactionArrayList.get(position).getAmount());
-        TransactionViewHolder.txtCard.setText(Transaction.CARD_TYPES[TransactionArrayList.get(position).getCard()] + "CARD");
-        TransactionViewHolder.txtTransaction.setText(Transaction.TRANSACTION_TYPES[TransactionArrayList.get(position).getTransactionType()]);
+        TransactionViewHolder.txtCard.setText(TransactionArrayList.get(position).getCard() + "CARD");
+        TransactionViewHolder.txtTransaction.setText(TransactionArrayList.get(position).getTransactionType());
         TransactionViewHolder.txtRecipient.setText((String) TransactionArrayList.get(position).getRecipient());
     }
 

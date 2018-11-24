@@ -44,12 +44,15 @@ public class FeedActivity extends AppCompatActivity {
                         String[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
 
                         for (int m = 0; m < bundledSMSes.length; m++) {
-
-                            transactionList.add(new Transaction(bundledSMSes[m]));
+                            Transaction transaction = new Transaction(bundledSMSes[m]);
+                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO)
+                                transactionList.add(transaction);
                         }
                     }
                     else{
-                        transactionList.add(new Transaction(smsLst.get(k)));
+                        Transaction transaction = new Transaction(smsLst.get(k));
+                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO)
+                            transactionList.add(transaction);
                     }
                 }
             }

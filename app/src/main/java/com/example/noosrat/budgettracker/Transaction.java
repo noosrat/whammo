@@ -6,17 +6,17 @@ public class Transaction {
     public static String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
     public static String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
 
-    boolean TRANSACTION_TYPE_CASH = false;
-    boolean TRANSACTION_TYPE_EFT = false;
-    boolean TRANSACTION_TYPE_DEBIT_ORDER = false;
-    boolean TRANSACTION_TYPE_PAYMENT = false;
-    boolean TRANSACTION_TYPE_DEPOSIT = false;
-    boolean TRANSACTION_TYPE_INFO = false;
-    boolean TRANSACTION_TYPE_PURCHASE = false;
+    static final int TRANSACTION_TYPE_CASH = 101;
+    static final int TRANSACTION_TYPE_EFT = 102;
+    static final int TRANSACTION_TYPE_DEBIT_ORDER = 103;
+    static final int TRANSACTION_TYPE_PAYMENT = 104;
+    static final int TRANSACTION_TYPE_DEPOSIT = 105;
+    static final int TRANSACTION_TYPE_INFO = 106;
+    static final int TRANSACTION_TYPE_PURCHASE = 107;
 
-    boolean CARD_TYPE_DEBIT = false;
-    boolean CARD_TYPE_CREDIT = false;
-    boolean CARD_TYPE_NOCARD = false;
+    static final int CARD_TYPE_DEBIT = 201;
+    static final int CARD_TYPE_CREDIT = 202;
+    static final int CARD_TYPE_NOCARD = 203;
 
     int transactionType;
     String amount;
@@ -51,14 +51,6 @@ public class Transaction {
                 amount = transaction.getAmount();
                 recipient = transaction.getReciepient();
                 card = transaction.getCard();
-
-                TRANSACTION_TYPE_CASH = transaction.isTRANSACTION_TYPE_CASH();
-                TRANSACTION_TYPE_EFT = transaction.isTRANSACTION_TYPE_EFT();
-                TRANSACTION_TYPE_DEBIT_ORDER = transaction.isTRANSACTION_TYPE_DEBIT_ORDER();
-                TRANSACTION_TYPE_PAYMENT = transaction.isTRANSACTION_TYPE_PAYMENT();
-                TRANSACTION_TYPE_DEPOSIT = transaction.isTRANSACTION_TYPE_DEPOSIT();
-                TRANSACTION_TYPE_INFO = transaction.isTRANSACTION_TYPE_INFO();
-                TRANSACTION_TYPE_PURCHASE = transaction.isTRANSACTION_TYPE_PURCHASE();
             }
 
         }
@@ -80,21 +72,21 @@ public class Transaction {
         return Math.abs(Float.parseFloat (amount.replace(",","").substring(1)));
     }
 
-    public String getTransactionType() {
+    public String getTransactionTypeDisplay() {
 
-        if (TRANSACTION_TYPE_CASH)
+        if (transactionType == TRANSACTION_TYPE_CASH)
             return "CASH";
-        if (TRANSACTION_TYPE_EFT)
+        if (transactionType == TRANSACTION_TYPE_EFT)
             return "EFT";
-        if (TRANSACTION_TYPE_DEBIT_ORDER)
+        if (transactionType == TRANSACTION_TYPE_DEBIT_ORDER)
             return "DEBIT ORDER";
-        if (TRANSACTION_TYPE_PAYMENT)
+        if (transactionType == TRANSACTION_TYPE_PAYMENT)
             return "PAYMENT";
-        if (TRANSACTION_TYPE_DEPOSIT)
+        if (transactionType == TRANSACTION_TYPE_DEPOSIT)
             return "DEPOSIT";
-        if (TRANSACTION_TYPE_INFO)
+        if (transactionType == TRANSACTION_TYPE_INFO)
             return "INFO";
-        if (TRANSACTION_TYPE_PURCHASE)
+        if (transactionType == TRANSACTION_TYPE_PURCHASE)
             return "PURCHASE";
 
 
@@ -115,11 +107,11 @@ public class Transaction {
 
     public String getCard() {
 
-        if (CARD_TYPE_DEBIT)
+        if (card == CARD_TYPE_DEBIT)
             return "DEBIT";
-        if (CARD_TYPE_CREDIT)
+        if (card == CARD_TYPE_CREDIT)
             return "CREDIT";
-        if (CARD_TYPE_NOCARD)
+        if (card == CARD_TYPE_NOCARD)
             return "NO";
 
         return "";
@@ -129,31 +121,7 @@ public class Transaction {
         return bank;
     }
 
-    public boolean isTRANSACTION_TYPE_CASH() {
-        return TRANSACTION_TYPE_CASH;
-    }
-
-    public boolean isTRANSACTION_TYPE_EFT() {
-        return TRANSACTION_TYPE_EFT;
-    }
-
-    public boolean isTRANSACTION_TYPE_DEBIT_ORDER() {
-        return TRANSACTION_TYPE_DEBIT_ORDER;
-    }
-
-    public boolean isTRANSACTION_TYPE_PAYMENT() {
-        return TRANSACTION_TYPE_PAYMENT;
-    }
-
-    public boolean isTRANSACTION_TYPE_DEPOSIT() {
-        return TRANSACTION_TYPE_DEPOSIT;
-    }
-
-    public boolean isTRANSACTION_TYPE_INFO() {
-        return TRANSACTION_TYPE_INFO;
-    }
-
-    public boolean isTRANSACTION_TYPE_PURCHASE() {
-        return TRANSACTION_TYPE_PURCHASE;
+    public int getTransactionType() {
+        return transactionType;
     }
 }

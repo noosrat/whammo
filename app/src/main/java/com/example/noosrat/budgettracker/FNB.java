@@ -2,45 +2,17 @@ package com.example.noosrat.budgettracker;
 
 public class FNB {
 
-    boolean TRANSACTION_TYPE_CASH = false;
-    boolean TRANSACTION_TYPE_EFT = false;
-    boolean TRANSACTION_TYPE_DEBIT_ORDER = false;
-    boolean TRANSACTION_TYPE_PAYMENT = false;
-    boolean TRANSACTION_TYPE_DEPOSIT = false;
-    boolean TRANSACTION_TYPE_INFO = false;
-    boolean TRANSACTION_TYPE_PURCHASE = false;
+    static final int TRANSACTION_TYPE_CASH = 101;
+    static final int TRANSACTION_TYPE_EFT = 102;
+    static final int TRANSACTION_TYPE_DEBIT_ORDER = 103;
+    static final int TRANSACTION_TYPE_PAYMENT = 104;
+    static final int TRANSACTION_TYPE_DEPOSIT = 105;
+    static final int TRANSACTION_TYPE_INFO = 106;
+    static final int TRANSACTION_TYPE_PURCHASE = 107;
 
-    boolean CARD_TYPE_DEBIT = false;
-    boolean CARD_TYPE_CREDIT = false;
-    boolean CARD_TYPE_NOCARD = false;
-
-    public boolean isTRANSACTION_TYPE_CASH() {
-        return TRANSACTION_TYPE_CASH;
-    }
-
-    public boolean isTRANSACTION_TYPE_EFT() {
-        return TRANSACTION_TYPE_EFT;
-    }
-
-    public boolean isTRANSACTION_TYPE_DEBIT_ORDER() {
-        return TRANSACTION_TYPE_DEBIT_ORDER;
-    }
-
-    public boolean isTRANSACTION_TYPE_PAYMENT() {
-        return TRANSACTION_TYPE_PAYMENT;
-    }
-
-    public boolean isTRANSACTION_TYPE_DEPOSIT() {
-        return TRANSACTION_TYPE_DEPOSIT;
-    }
-
-    public boolean isTRANSACTION_TYPE_INFO() {
-        return TRANSACTION_TYPE_INFO;
-    }
-
-    public boolean isTRANSACTION_TYPE_PURCHASE() {
-        return TRANSACTION_TYPE_PURCHASE;
-    }
+    static final int CARD_TYPE_DEBIT = 201;
+    static final int CARD_TYPE_CREDIT = 202;
+    static final int CARD_TYPE_NOCARD = 203;
 
     public String getAmount() {
         return amount;
@@ -69,37 +41,6 @@ public class FNB {
         this.originalMessage = message;
         calculateAll();
 
-    }
-
-    private int retrieveCard(char card_code) {
-        if (card_code =='R'){
-            return 0;
-        }
-
-        return 1;
-    }
-
-    private String retrieveLocation() {
-        return null;
-    }
-
-    private Float retrieveAmount() {
-        return null;
-    }
-
-    private int retrieveTransactionType(String transaction_type) {
-        if (transaction_type.equals("reserved")) {
-            return 0;
-        }
-        else if (transaction_type.equals("paid")) {
-            return 1;
-        }
-        else if (transaction_type.equals("withdrawn")){
-            return 2;
-        }
-        else{
-            return 3;
-        }
     }
 
     public String getMessage() {
@@ -131,24 +72,24 @@ public class FNB {
                 if (pos == -1) {
                     pos = message.indexOf("withdrawn");
                     if (pos == -1)
-                        TRANSACTION_TYPE_INFO = true;
+                        transactionType = TRANSACTION_TYPE_INFO;
                     else{
-                        TRANSACTION_TYPE_CASH = true;
+                        transactionType = TRANSACTION_TYPE_CASH;
                         this.reciepient = "CASH";
                     }
                 }
                 else{
-                    TRANSACTION_TYPE_EFT = true;
+                    transactionType = TRANSACTION_TYPE_EFT;
                     this.reciepient = message.substring(message.indexOf("Ref.")+"Ref.".length(),message.indexOf("Paid"));
                 }
             }
             else{
-                TRANSACTION_TYPE_PAYMENT = true;
+                transactionType = TRANSACTION_TYPE_PAYMENT;
                 this.reciepient = message.substring(message.indexOf("@ ")+"@ ".length(),message.indexOf("from"));
             }
         }
         else{
-            TRANSACTION_TYPE_DEPOSIT = true;
+            transactionType = TRANSACTION_TYPE_DEPOSIT;
             String temp = message.substring(message.indexOf("Eft. Ref.")+ "Eft. Ref.".length());
             this.reciepient = temp.substring(0,temp.indexOf(". "));
         }

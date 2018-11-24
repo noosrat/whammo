@@ -2,9 +2,45 @@ package com.example.noosrat.budgettracker;
 
 public class FNB {
 
-    public static String[] TRANSACTION_TYPES = {"PAYMENT", "DEPOSIT", "EFT", "INFO"};
-    public static String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
-    public static String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
+    boolean TRANSACTION_TYPE_CASH = false;
+    boolean TRANSACTION_TYPE_EFT = false;
+    boolean TRANSACTION_TYPE_DEBIT_ORDER = false;
+    boolean TRANSACTION_TYPE_PAYMENT = false;
+    boolean TRANSACTION_TYPE_DEPOSIT = false;
+    boolean TRANSACTION_TYPE_INFO = false;
+    boolean TRANSACTION_TYPE_PURCHASE = false;
+
+    boolean CARD_TYPE_DEBIT = false;
+    boolean CARD_TYPE_CREDIT = false;
+    boolean CARD_TYPE_NOCARD = false;
+
+    public boolean isTRANSACTION_TYPE_CASH() {
+        return TRANSACTION_TYPE_CASH;
+    }
+
+    public boolean isTRANSACTION_TYPE_EFT() {
+        return TRANSACTION_TYPE_EFT;
+    }
+
+    public boolean isTRANSACTION_TYPE_DEBIT_ORDER() {
+        return TRANSACTION_TYPE_DEBIT_ORDER;
+    }
+
+    public boolean isTRANSACTION_TYPE_PAYMENT() {
+        return TRANSACTION_TYPE_PAYMENT;
+    }
+
+    public boolean isTRANSACTION_TYPE_DEPOSIT() {
+        return TRANSACTION_TYPE_DEPOSIT;
+    }
+
+    public boolean isTRANSACTION_TYPE_INFO() {
+        return TRANSACTION_TYPE_INFO;
+    }
+
+    public boolean isTRANSACTION_TYPE_PURCHASE() {
+        return TRANSACTION_TYPE_PURCHASE;
+    }
 
     public String getAmount() {
         return amount;
@@ -35,8 +71,8 @@ public class FNB {
 
     }
 
-    private int retrieveCard(String card_code) {
-        if (card_code.equals("R")){
+    private int retrieveCard(char card_code) {
+        if (card_code =='R'){
             return 0;
         }
 
@@ -76,61 +112,46 @@ public class FNB {
         int pos = 0;
         String message = this.originalMessage;
 
-        if (message.charAt(0) != 'R') {
-            pos = message.indexOf(")"); //end of FNB:-)
-            message = message.substring(pos+2);
+
+        pos = message.indexOf(")"); //end of FNB:-)
+        message = message.substring(pos+2);
+
+
+
+        //GETTING AMOUNT
+        pos = message.indexOf(" ");
+        this.amount = message.substring(0, pos);
+
+        //GETTING IN or OUT
+        pos = message.indexOf("paid to");
+        if (pos == -1) {
+            pos = message.indexOf("reserved for purchase");
+            if (pos == -1) {
+                pos = message.indexOf("Paid from");
+                if (pos == -1) {
+                    pos = message.indexOf("withdrawn");
+                    if (pos == -1)
+                        TRANSACTION_TYPE_INFO = true;
+                    else{
+                        TRANSACTION_TYPE_CASH = true;
+                        this.reciepient = "CASH";
+                    }
+                }
+                else{
+                    TRANSACTION_TYPE_EFT = true;
+                    this.reciepient = message.substring(message.indexOf("Ref.")+"Ref.".length(),message.indexOf("Paid"));
+                }
+            }
+            else{
+                TRANSACTION_TYPE_PAYMENT = true;
+                this.reciepient = message.substring(message.indexOf("@ ")+"@ ".length(),message.indexOf("from"));
+            }
         }
-
-
-        pos = message.indexOf(" "); //end of amount
-
-        this.amount = message.substring(0, pos); //amount
-
-        message = message.substring(pos+1); //everything after amount
-
-        pos = message.indexOf(" "); //end of transaction keyword
-
-        String transaction_type;
-        if (pos > -1)
-            transaction_type = message.substring(0, pos); //transaction type
         else{
-            pos = message.indexOf(".");
-            transaction_type = message.substring(0, pos); //transaction type
+            TRANSACTION_TYPE_DEPOSIT = true;
+            String temp = message.substring(message.indexOf("Eft. Ref.")+ "Eft. Ref.".length());
+            this.reciepient = temp.substring(0,temp.indexOf(". "));
         }
-
-
-        this.transactionType = retrieveTransactionType(transaction_type);
-
-
-        if (this.transactionType == 0){
-            pos = message.indexOf("@");
-
-            message = message.substring(pos+2); //everything after transaction keyword
-            pos = message.indexOf("from");
-
-            this.reciepient = message.substring(0, pos); //recipient
-
-        }
-        else if (this.transactionType == 1){
-            pos = message.indexOf("Eft. Ref.");
-
-            message = message.substring(pos+"Eft. Ref.".length()); //everything after transaction keyword
-            pos = message.indexOf(".");
-
-            this.reciepient = message.substring(0, pos); //recipient
-
-        }
-        else if (this.transactionType == 2){
-            this.reciepient = "CASH"; //recipient
-
-        }
-        else if (this.transactionType == 3){
-            pos = message.indexOf("Ref.");
-
-            this.reciepient = message.substring(pos+"Ref.".length()); //recipient
-
-        }
-
 
     }
 }

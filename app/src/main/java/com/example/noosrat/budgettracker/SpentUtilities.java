@@ -108,8 +108,7 @@ public class SpentUtilities {
         for (int i=0; i<transactionList.size(); i++){
             sum = sum + transactionList.get(i).getNumberAmount();
         }
-
-        return 0;
+        return sum;
     }
 
 

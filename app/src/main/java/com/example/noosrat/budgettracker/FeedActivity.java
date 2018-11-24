@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,11 @@ public class FeedActivity extends AppCompatActivity {
 
 
         }
-        txtBalance.setText(balance + "");
+        balance = SpentUtilities.calculateExpenses(transactionList);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+
+        txtBalance.setText(df.format(balance) + "");
     }
 }

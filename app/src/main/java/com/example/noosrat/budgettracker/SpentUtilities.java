@@ -34,7 +34,12 @@ public class SpentUtilities {
     public static String[] smsCleaner(String message){
 
         int pos = message.indexOf(")"); //end of FNB:-)
+
+        String bankIndicator = message.substring(0, pos + 1);
+
         message = message.substring(pos+2);
+
+        String transactionTypeIndicator = message.substring(0, message.indexOf(":"));
 
         String[] messages_list = new String[0];
         if (message.charAt(0) != 'R') {
@@ -47,7 +52,9 @@ public class SpentUtilities {
                 messages_list = Arrays.copyOfRange(messages_list, 0,messages_list.length-2);
             }
 
-
+            for (int i=0; i<messages_list.length; i++){
+                messages_list[i] = bankIndicator + " "+ messages_list[i] + " " + transactionTypeIndicator;
+            }
 
             return messages_list;
 
@@ -104,22 +111,6 @@ public class SpentUtilities {
 
         return 0;
     }
-
-//    public ArrayList<Transaction> SMStoTransaction(ArrayList<String> smsList){
-//
-//        ArrayList<Transaction> lstSms = new ArrayList<>();
-//
-//
-//        for (int i = 0; i < smsList.size(); i++) {
-//            Transaction sms = new Transaction(smsList.get(i));
-//            if ((sms.getTransactionType() != 3) && (sms.getTransactionType() != 1)) {
-//                lstSms.add(sms);
-//
-//            }
-//        }
-//
-//        return lstSms;
-//    }
 
 
 }

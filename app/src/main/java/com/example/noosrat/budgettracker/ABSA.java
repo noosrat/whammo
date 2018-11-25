@@ -188,6 +188,20 @@ public class ABSA {
                 this.amount =  message.substring(0, pos); //amount
 
             }
+            else if (this.transactionType == TRANSACTION_TYPE_DEBIT_ORDER){
+                message = message.substring(pos+2); //everything after transaction type
+
+                pos = message.indexOf(",");
+                message = message.substring(pos+2); //everything after other info we don't need
+
+                pos = message.indexOf(",");
+                this.reciepient =  message.substring(0, pos); //recipient
+
+                message = message.substring(pos+2); //everything after recipient
+
+                pos = message.indexOf(".")+3;
+                this.amount =  message.substring(0, pos); //amount
+            }
 
         }
         else {

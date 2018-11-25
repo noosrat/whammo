@@ -5,7 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
@@ -13,13 +17,12 @@ import java.util.ArrayList;
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
 
     private final Context context;
-    ArrayList<Transaction> TransactionArrayList;
+    ArrayList<Transaction> transactionArrayList;
 
     public TransactionAdapter(ArrayList<Transaction> Transaction, Context context) {
-        this.TransactionArrayList = Transaction;
+        this.transactionArrayList = Transaction;
         this.context = context;
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -28,8 +31,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public TransactionViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View v= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.transaction_item, viewGroup, false);
-
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.transaction_item, viewGroup, false);
         TransactionViewHolder uvh = new TransactionViewHolder(v);
         return uvh;
 
@@ -37,44 +39,37 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final TransactionViewHolder TransactionViewHolder, final int position) {
-
-        TransactionViewHolder.txtSMS.setText((String) TransactionArrayList.get(position).getMessage());
-        TransactionViewHolder.txtAmount.setText((String) TransactionArrayList.get(position).getAmount());
-        TransactionViewHolder.txtCard.setText(TransactionArrayList.get(position).getCard() + "CARD");
-        TransactionViewHolder.txtTransaction.setText(TransactionArrayList.get(position).getTransactionTypeDisplay());
-        TransactionViewHolder.txtRecipient.setText((String) TransactionArrayList.get(position).getRecipient());
+    public void onBindViewHolder(final TransactionViewHolder transactionViewHolder, final int position) {
+        transactionViewHolder.tvAmount.setText((String) transactionArrayList.get(position).getAmount());
+        transactionViewHolder.tvDescription.setText((String) transactionArrayList.get(position).getMerchant().getName());
+        Glide.with(context)
+                .load(transactionArrayList.get(position).getMerchant().getIcon())
+                .apply(RequestOptions.circleCropTransform())
+                .into(transactionViewHolder.imgMerchant);
     }
 
     @Override
     public int getItemCount() {
 
-        if (TransactionArrayList == null) {
+        if (transactionArrayList == null) {
             return 0;
         } else {
-            return TransactionArrayList.size();
+            return transactionArrayList.size();
         }
     }
 
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
-
-        TextView txtSMS;
-        TextView txtAmount;
-        TextView txtCard;
-        TextView txtRecipient;
-        TextView txtTransaction;
+        private TextView tvDescription;
+        private TextView tvAmount;
+        private ImageView imgMerchant;
 
         TransactionViewHolder(View itemView) {
             super(itemView);
-
-            txtSMS = (TextView) itemView.findViewById(R.id.textView);
-            txtAmount = (TextView) itemView.findViewById(R.id.amount);
-            txtCard = (TextView) itemView.findViewById(R.id.card);
-            txtRecipient = (TextView) itemView.findViewById(R.id.recipient);
-            txtTransaction = (TextView) itemView.findViewById(R.id.transaction);
+            tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
+            tvAmount = (TextView) itemView.findViewById(R.id.tvAmount);
+            imgMerchant = (ImageView) itemView.findViewById(R.id.imgMerchant);
         }
-
 
 
     }

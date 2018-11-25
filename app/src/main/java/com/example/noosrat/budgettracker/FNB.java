@@ -71,15 +71,23 @@ public class FNB {
                 pos = message.indexOf("Paid from");
                 if (pos == -1) {
                     pos = message.indexOf("withdrawn");
-                    if (pos == -1)
-                        transactionType = TRANSACTION_TYPE_INFO;
+                    if (pos == -1) {
+                        pos = message.indexOf("paid from");
+                        if (pos == -1)
+                            transactionType = TRANSACTION_TYPE_INFO;
+                        else{
+                            transactionType = TRANSACTION_TYPE_EFT;
+                            String temp = message.substring(message.indexOf("Ref.")+"Ref.".length());
+                            this.reciepient = temp.substring(0,temp.indexOf(". "));
+                        }
+                    }
                     else{
                         transactionType = TRANSACTION_TYPE_CASH;
                         this.reciepient = "CASH";
                     }
                 }
                 else{
-                    transactionType = TRANSACTION_TYPE_EFT;
+                    transactionType = TRANSACTION_TYPE_DEBIT_ORDER;
                     this.reciepient = message.substring(message.indexOf("Ref.")+"Ref.".length(),message.indexOf("Paid"));
                 }
             }

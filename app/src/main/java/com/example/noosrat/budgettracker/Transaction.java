@@ -1,5 +1,7 @@
 package com.example.noosrat.budgettracker;
 
+import com.example.noosrat.budgettracker.POJO.Merchant.Merchant;
+
 public class Transaction {
 
     public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "PURCHASE"};
@@ -24,6 +26,7 @@ public class Transaction {
     String message;
     int card;
     String bank;
+    private Merchant merchant;
 
     public Transaction() {
     }
@@ -93,6 +96,38 @@ public class Transaction {
         return "";
     }
 
+    public void setTransactionType(int transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setCard(int card) {
+        this.card = card;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
+    }
+
     public String getAmount() {
         return amount;
     }
@@ -105,7 +140,7 @@ public class Transaction {
         return message;
     }
 
-    public String getCard() {
+    public String getCardDisplay() {
 
         if (card == CARD_TYPE_DEBIT)
             return "DEBIT";
@@ -123,5 +158,9 @@ public class Transaction {
 
     public int getTransactionType() {
         return transactionType;
+    }
+
+    public int getCard() {
+        return card;
     }
 }

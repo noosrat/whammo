@@ -46,7 +46,7 @@ public class SpentUtilities {
             }
 
             if (messages_list[messages_list.length-1].trim().startsWith("Avail")){
-                messages_list = Arrays.copyOfRange(messages_list, 0,messages_list.length-2);
+                messages_list = Arrays.copyOfRange(messages_list, 0,messages_list.length-1);
             }
 
             for (int i=0; i<messages_list.length; i++){

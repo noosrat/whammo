@@ -1,12 +1,9 @@
 package com.example.noosrat.budgettracker;
 
 import android.content.ContentResolver;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Telephony;
-import android.support.v4.content.ContextCompat;
-import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

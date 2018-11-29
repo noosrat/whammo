@@ -51,6 +51,9 @@ public class FeedActivity extends AppCompatActivity {
 
                 MerchantHelper mh = new MerchantHelper();
 
+                Date today = new Date();
+                transactionList.add(null);
+
                 for (int k = 0; k < smsLst.size(); k++) {
                     if (SpentUtilities.isBundledSms(smsLst.get(k).getMessage())) {
                         SMS[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
@@ -59,7 +62,14 @@ public class FeedActivity extends AppCompatActivity {
                             Transaction transaction = new Transaction(bundledSMSes[m]);
                             if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
                                 transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                                transactionList.add(transaction);
+                                if ((transaction.getDate().getDate() == today.getDate()) && (transaction.getDate().getMonth() == today.getMonth())) {
+                                    transactionList.add(transaction);
+                                }
+                                else{
+                                    transactionList.add(null);
+                                    transactionList.add(transaction);
+                                    today = transaction.getDate();
+                                }
 
                             }
 
@@ -68,7 +78,15 @@ public class FeedActivity extends AppCompatActivity {
                         Transaction transaction = new Transaction(smsLst.get(k));
                         if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                            transactionList.add(transaction);
+                            if ((transaction.getDate().getDate() == today.getDate()) && (transaction.getDate().getMonth() == today.getMonth())) {
+                                transactionList.add(transaction);
+                            }
+                            else{
+                                transactionList.add(null);
+                                transactionList.add(transaction);
+                                today = transaction.getDate();
+                            }
+
                         }
                     }
                 }
@@ -98,8 +116,10 @@ public class FeedActivity extends AppCompatActivity {
         float sum = 0;
 
         for (int i = 0; i < transactionList.size(); i++) {
-            sum = sum + transactionList.get(i).getNumberAmount();
-            sumDataList.add(15000 - sum);
+            if (transactionList.get(i)!=null){
+                sum = sum + transactionList.get(i).getNumberAmount();
+                sumDataList.add(15000 - sum);
+            }
 
         }
         sparkView.setAdapter(new CustomSparkAdapter(sumDataList));

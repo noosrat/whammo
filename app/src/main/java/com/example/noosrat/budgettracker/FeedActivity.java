@@ -45,15 +45,15 @@ public class FeedActivity extends AppCompatActivity {
 
             String[] banks = {"ABSA", "FNB"};
 
-            ArrayList<String> smsLst = SpentUtilities.getSMSes(banks, new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
+            ArrayList<SMS> smsLst = SpentUtilities.getSMSes(banks, new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
 
             if (smsLst != null) {
 
                 MerchantHelper mh = new MerchantHelper();
 
                 for (int k = 0; k < smsLst.size(); k++) {
-                    if (SpentUtilities.isBundledSms(smsLst.get(k))) {
-                        String[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
+                    if (SpentUtilities.isBundledSms(smsLst.get(k).getMessage())) {
+                        SMS[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
 
                         for (int m = 0; m < bundledSMSes.length; m++) {
                             Transaction transaction = new Transaction(bundledSMSes[m]);

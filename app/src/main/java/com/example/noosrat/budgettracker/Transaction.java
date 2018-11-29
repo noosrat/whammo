@@ -2,6 +2,8 @@ package com.example.noosrat.budgettracker;
 
 import com.example.noosrat.budgettracker.POJO.Merchant.Merchant;
 
+import java.util.Date;
+
 public class Transaction {
 
     public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "PURCHASE"};
@@ -26,14 +28,16 @@ public class Transaction {
     String message;
     int card;
     String bank;
+    Date date;
     private Merchant merchant;
 
     public Transaction() {
     }
 
-    public Transaction(String message) {
+    public Transaction(SMS sms) {
 
-        this.message = message;
+        this.message = sms.getMessage();
+        this.date = sms.getDate();
         int pos = message.indexOf(":");
         if (pos>-1)
             this.bank = message.substring(0, pos);
@@ -162,5 +166,9 @@ public class Transaction {
 
     public int getCard() {
         return card;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

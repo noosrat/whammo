@@ -41,6 +41,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @Override
     public void onBindViewHolder(final TransactionViewHolder transactionViewHolder, final int position) {
         transactionViewHolder.tvAmount.setText((String) transactionArrayList.get(position).getAmount());
+        transactionViewHolder.tvDate.setText((String) transactionArrayList.get(position).getDate().toString());
         transactionViewHolder.tvDescription.setText((String) transactionArrayList.get(position).getMerchant().getName());
         Glide.with(context)
                 .load(transactionArrayList.get(position).getMerchant().getIcon())
@@ -62,12 +63,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
         private TextView tvDescription;
         private TextView tvAmount;
+        private TextView tvDate;
         private ImageView imgMerchant;
 
         TransactionViewHolder(View itemView) {
             super(itemView);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             tvAmount = (TextView) itemView.findViewById(R.id.tvAmount);
+            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
             imgMerchant = (ImageView) itemView.findViewById(R.id.imgMerchant);
         }
 

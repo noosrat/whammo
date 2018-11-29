@@ -28,7 +28,9 @@ public class SpentUtilities {
 
     }
 
-    public static String[] smsCleaner(String message){
+    public static SMS[] smsCleaner(SMS sms){
+
+        String message = sms.getMessage();
 
         int pos = message.indexOf(")"); //end of FNB:-)
 
@@ -39,6 +41,7 @@ public class SpentUtilities {
         String transactionTypeIndicator = message.substring(0, message.indexOf(":"));
 
         String[] messages_list = new String[0];
+
         if (message.charAt(0) != 'R') {
 
             message = message.substring(message.indexOf(":")+2);
@@ -49,18 +52,22 @@ public class SpentUtilities {
                 messages_list = Arrays.copyOfRange(messages_list, 0,messages_list.length-1);
             }
 
+            SMS[] sms_list = new SMS[messages_list.length];
+
             for (int i=0; i<messages_list.length; i++){
                 messages_list[i] = bankIndicator + " "+ messages_list[i] + " " + transactionTypeIndicator;
+
+                sms_list[i] = new SMS(messages_list[i], sms.getDate());
             }
 
-            return messages_list;
+            return sms_list;
 
     }
     
-    public static ArrayList<String> getSMSes(String[] banks, Date date, ContentResolver cr, Uri uri){
+    public static ArrayList<SMS> getSMSes(String[] banks, Date date, ContentResolver cr, Uri uri){
 
 
-        ArrayList<String> lstSms = new ArrayList<String>();
+        ArrayList<SMS> lstSms = new ArrayList<SMS>();
 
         Date monthStart = new Date();
         monthStart.setDate(1);
@@ -82,7 +89,7 @@ public class SpentUtilities {
         if (c.moveToFirst()) {
 
             for (int i = 0; i < totalSMS; i++) {
-                lstSms.add(c.getString(0));
+                lstSms.add(new SMS(c.getString(0), new Date(Long.parseLong( c.getString(1)))));
 
                 c.moveToNext();
 

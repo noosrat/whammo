@@ -2,9 +2,11 @@ package com.example.noosrat.budgettracker;
 
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,10 +34,16 @@ public class FeedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Remove title bar
         setContentView(R.layout.activity_feed);
+
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.balance_action_bar);
 
         sparkView = (SparkView) findViewById(R.id.sparkview);
         TextView txtBalance = findViewById(R.id.balance);
+        TextView txtBalance2 = findViewById(R.id.balance_title);
         float balance = 0;
 
         ArrayList<Transaction> transactionList = new ArrayList<>();
@@ -115,6 +123,7 @@ public class FeedActivity extends AppCompatActivity {
         df.setRoundingMode(RoundingMode.CEILING);
 
         txtBalance.setText(df.format(balance) + "");
+        txtBalance2.setText(df.format(balance) + "");
     }
 
     public float calculateExpenses(ArrayList<Transaction> transactionList) {
@@ -129,6 +138,9 @@ public class FeedActivity extends AppCompatActivity {
 
         }
         sparkView.setAdapter(new CustomSparkAdapter(sumDataList));
+        sparkView.setLineColor(Color.WHITE);
+        sparkView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        sparkView.setLineWidth(3);
 
         return sum;
     }

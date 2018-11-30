@@ -31,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bariol_regular"
+                    android:textColor="#646a73"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@+id/imgMerchant"
@@ -57,7 +58,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@+id/imgMerchant"
-                    android:text="Pizza WOW😃"
+                    android:layout_toStartOf="@id/tvAmount"
+                    android:text="Pizza;lk;lkjlkj;kj;l;lk;kljklkjl; WOW😃"
                     android:textSize="18sp" />
 
 

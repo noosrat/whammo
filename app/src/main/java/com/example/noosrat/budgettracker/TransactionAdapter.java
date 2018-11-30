@@ -15,29 +15,24 @@ import java.util.ArrayList;
 
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
-    private static final int TYPE_ITEM_DATE = 0;
-    private static final int TYPE_ITEM_TRANSACTION = 1;
 
     private final Context context;
-    ArrayList<Transaction> transactionArrayList;
+    ArrayList<FeedItem> transactionArrayList;
 
-    public TransactionAdapter(ArrayList<Transaction> Transaction, Context context) {
-        this.transactionArrayList = Transaction;
+    public TransactionAdapter(ArrayList<FeedItem> FeedItem, Context context) {
+        this.transactionArrayList = FeedItem;
         this.context = context;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (transactionArrayList.get(position) == null)
-            return 0;
-        else
-            return 1;
+        return transactionArrayList.get(position).itemViewType;
     }
 
     @Override
     public TransactionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v;
-        if (i == TYPE_ITEM_TRANSACTION)
+        if (i == FeedItem.TYPE_ITEM_TRANSACTION)
             v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.transaction_item, viewGroup, false);
         else
             v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.date_item, viewGroup, false);
@@ -49,14 +44,17 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(final TransactionViewHolder transactionViewHolder, final int position) {
-        if (getItemViewType(position) == TYPE_ITEM_TRANSACTION){
-            transactionViewHolder.tvAmount.setText((String) transactionArrayList.get(position).getAmount());
-            transactionViewHolder.tvDate.setText((String) transactionArrayList.get(position).getDate().toString());
-            transactionViewHolder.tvDescription.setText((String) transactionArrayList.get(position).getMerchant().getName());
+        if (getItemViewType(position) == FeedItem.TYPE_ITEM_TRANSACTION){
+            transactionViewHolder.tvAmount.setText((String) transactionArrayList.get(position).getTransaction().getAmount());
+            transactionViewHolder.tvDate.setText((String) transactionArrayList.get(position).getTransaction().getDate().toString());
+            transactionViewHolder.tvDescription.setText((String) transactionArrayList.get(position).getTransaction().getMerchant().getName());
             Glide.with(context)
-                    .load(transactionArrayList.get(position).getMerchant().getIcon())
+                    .load(transactionArrayList.get(position).getTransaction().getMerchant().getIcon())
                     .apply(RequestOptions.circleCropTransform())
                     .into(transactionViewHolder.imgMerchant);
+        }
+        else{
+            transactionViewHolder.tvDate.setText(transactionArrayList.get(position).getDisplayTimePeriodGroup());
         }
     }
 

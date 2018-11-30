@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.noosrat.budgettracker.Utilities.CustomSparkAdapter;
 import com.example.noosrat.budgettracker.Utilities.MerchantHelper;
+import com.example.noosrat.budgettracker.Utilities.TimeAgo;
 import com.robinhood.spark.SparkView;
 
 import java.math.RoundingMode;
@@ -38,6 +39,7 @@ public class FeedActivity extends AppCompatActivity {
         float balance = 0;
 
         ArrayList<Transaction> transactionList = new ArrayList<>();
+        ArrayList<FeedItem> feedItemsList = new ArrayList<>();
 
         if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
@@ -51,8 +53,7 @@ public class FeedActivity extends AppCompatActivity {
 
                 MerchantHelper mh = new MerchantHelper();
 
-                Date today = new Date();
-                transactionList.add(null);
+                String today = "";
 
                 for (int k = 0; k < smsLst.size(); k++) {
                     if (SpentUtilities.isBundledSms(smsLst.get(k).getMessage())) {
@@ -62,13 +63,15 @@ public class FeedActivity extends AppCompatActivity {
                             Transaction transaction = new Transaction(bundledSMSes[m]);
                             if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
                                 transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                                if ((transaction.getDate().getDate() == today.getDate()) && (transaction.getDate().getMonth() == today.getMonth())) {
+                                if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                     transactionList.add(transaction);
+                                    feedItemsList.add(new FeedItem(transaction));
                                 }
                                 else{
-                                    transactionList.add(null);
+                                    feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                     transactionList.add(transaction);
-                                    today = transaction.getDate();
+                                    feedItemsList.add(new FeedItem(transaction));
+                                    today = TimeAgo.getTimeAgo(transaction.getDate());
                                 }
 
                             }
@@ -78,13 +81,16 @@ public class FeedActivity extends AppCompatActivity {
                         Transaction transaction = new Transaction(smsLst.get(k));
                         if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                            if ((transaction.getDate().getDate() == today.getDate()) && (transaction.getDate().getMonth() == today.getMonth())) {
+                            if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                 transactionList.add(transaction);
+                                feedItemsList.add(new FeedItem(transaction));
+
                             }
                             else{
-                                transactionList.add(null);
+                                feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                 transactionList.add(transaction);
-                                today = transaction.getDate();
+                                feedItemsList.add(new FeedItem(transaction));
+                                today = TimeAgo.getTimeAgo(transaction.getDate());
                             }
 
                         }
@@ -97,7 +103,7 @@ public class FeedActivity extends AppCompatActivity {
 
             LinearLayoutManager llm = new LinearLayoutManager(FeedActivity.this);
             rv.setLayoutManager(llm);
-            TransactionAdapter adapter = new TransactionAdapter(transactionList, FeedActivity.this);
+            TransactionAdapter adapter = new TransactionAdapter(feedItemsList, FeedActivity.this);
 
             rv.setAdapter(adapter);
 

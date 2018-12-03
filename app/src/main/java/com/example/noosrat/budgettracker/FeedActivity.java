@@ -22,9 +22,11 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 public class FeedActivity extends AppCompatActivity {
@@ -32,7 +34,9 @@ public class FeedActivity extends AppCompatActivity {
     private ArrayList<Float> sumDataList = new ArrayList<>();
     private float[] yData;
     private Random random;
+    private float BUDGET = 20000;
     private SparkView sparkView;
+    ProgressBar budgetPercentage;
 
     Locale myLocale = new Locale("en", "ZA");
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(myLocale);
@@ -49,8 +53,12 @@ public class FeedActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.balance_action_bar);
 
         sparkView = (SparkView) findViewById(R.id.sparkview);
+        budgetPercentage = findViewById(R.id.progressBar);
         TextView txtBalance = findViewById(R.id.balance);
         TextView txtExpense = findViewById(R.id.total_expense);
+        TextView txtExpensePercentage = findViewById(R.id.percentage);
+        TextView txtDaysLeft = findViewById(R.id.days_left);
+        TextView txtPeriod = findViewById(R.id.time_period);
         float expense = 0;
 
         ArrayList<Transaction> transactionList = new ArrayList<>();
@@ -123,20 +131,39 @@ public class FeedActivity extends AppCompatActivity {
 
         }
 
-//        ProgressBar budgetPercentage = findViewById(R.id.progressBar);
-//        budgetPercentage.setMax(100);
-//        budgetPercentage.setProgress(25);
-
-
-
         expense = calculateExpenses(transactionList);
-        float balance = 40000 - expense;
+        float balance = BUDGET - expense;
 
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);
 
         txtExpense.setText(currencyFormat.format(expense));
         txtBalance.setText(currencyFormat.format(balance));
+
+        budgetPercentage.setMax((int) BUDGET);
+        budgetPercentage.setProgress((int) expense);
+
+        int expensePercentage = Math.round(expense/BUDGET*100);
+        txtExpensePercentage.setText(expensePercentage+"%");
+
+        Calendar cal = Calendar.getInstance();
+
+        Date today = new Date();
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+
+        Date lastDayOfMonth = cal.getTime();
+
+
+        long diffInMillies = Math.abs(lastDayOfMonth.getTime() - today.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+        txtDaysLeft.setText(diff+"");
+
+        String shortMonth = cal.getDisplayName(Calendar.MONTH,Calendar.SHORT,myLocale);
+        String duration = shortMonth +" 1 to " + shortMonth +" " +cal.getActualMaximum(Calendar.DATE);
+
+        txtPeriod.setText(duration);
+
     }
 
     public float calculateExpenses(ArrayList<Transaction> transactionList) {

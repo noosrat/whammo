@@ -4,12 +4,16 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Telephony;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
 public class SpentUtilities {
+
+    public static final int BODY = 0;
+    public static final int DATE = 1;
 
     public static boolean isBundledSms(String sms){
 
@@ -64,7 +68,7 @@ public class SpentUtilities {
 
     }
     
-    public static ArrayList<SMS> getSMSes(String[] banks, Date date, ContentResolver cr, Uri uri){
+    public static ArrayList<SMS> getSMSes(Date date, ContentResolver cr, Uri uri){
 
 
         ArrayList<SMS> lstSms = new ArrayList<SMS>();
@@ -80,8 +84,8 @@ public class SpentUtilities {
 
         Cursor c = cr.query(uri, // Official CONTENT_URI from docs
                 new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
-                "date > ? AND body LIKE ?",
-                new String[] {"" + millis, banks[1] + "%"},
+                "date > ? AND (body LIKE ? OR body LIKE ?)",
+                new String[] {"" + millis, "ABSA:%", "FNB%" },
                 Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
 
         int totalSMS = c.getCount();
@@ -89,14 +93,14 @@ public class SpentUtilities {
         if (c.moveToFirst()) {
 
             for (int i = 0; i < totalSMS; i++) {
-                lstSms.add(new SMS(c.getString(0), new Date(Long.parseLong( c.getString(1)))));
+                lstSms.add(new SMS(c.getString(BODY), new Date(Long.parseLong( c.getString(DATE)))));
 
                 c.moveToNext();
 
 
             }
         } else {
-            throw new RuntimeException("You have no SMS in Inbox");
+            Log.i("ERROR: ","You have no SMS in Inbox");
         }
             c.close();
 

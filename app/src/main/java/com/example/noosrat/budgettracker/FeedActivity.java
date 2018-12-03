@@ -60,9 +60,7 @@ public class FeedActivity extends AppCompatActivity {
 
             ContentResolver cr = getContentResolver();
 
-            String[] banks = {"ABSA", "FNB"};
-
-            ArrayList<SMS> smsLst = SpentUtilities.getSMSes(banks, new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
+            ArrayList<SMS> smsLst = SpentUtilities.getSMSes(new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
 
             if (smsLst != null) {
 

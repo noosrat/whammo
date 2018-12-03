@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.noosrat.budgettracker.Utilities.CustomSparkAdapter;
@@ -19,9 +20,12 @@ import com.robinhood.spark.SparkView;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.Locale;
+
 
 public class FeedActivity extends AppCompatActivity {
 
@@ -29,6 +33,9 @@ public class FeedActivity extends AppCompatActivity {
     private float[] yData;
     private Random random;
     private SparkView sparkView;
+
+    Locale myLocale = new Locale("en", "ZA");
+    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(myLocale);
 
 
     @Override
@@ -43,8 +50,8 @@ public class FeedActivity extends AppCompatActivity {
 
         sparkView = (SparkView) findViewById(R.id.sparkview);
         TextView txtBalance = findViewById(R.id.balance);
-        TextView txtBalance2 = findViewById(R.id.balance_title);
-        float balance = 0;
+        TextView txtExpense = findViewById(R.id.total_expense);
+        float expense = 0;
 
         ArrayList<Transaction> transactionList = new ArrayList<>();
         ArrayList<FeedItem> feedItemsList = new ArrayList<>();
@@ -117,13 +124,21 @@ public class FeedActivity extends AppCompatActivity {
 
 
         }
-        balance = calculateExpenses(transactionList);
+
+//        ProgressBar budgetPercentage = findViewById(R.id.progressBar);
+//        budgetPercentage.setMax(100);
+//        budgetPercentage.setProgress(25);
+
+
+
+        expense = calculateExpenses(transactionList);
+        float balance = 40000 - expense;
 
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);
 
-        txtBalance.setText(df.format(balance) + "");
-        txtBalance2.setText(df.format(balance) + "");
+        txtExpense.setText(currencyFormat.format(expense));
+        txtBalance.setText(currencyFormat.format(balance));
     }
 
     public float calculateExpenses(ArrayList<Transaction> transactionList) {

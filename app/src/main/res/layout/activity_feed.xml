@@ -5,24 +5,154 @@
     android:layout_height="match_parent"
     tools:context=".FeedActivity">
 
-    <TextView
-        android:id="@+id/balance"
-        android:layout_width="wrap_content"
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sparkview"
-        android:layout_marginBottom="8dp"
-        android:text="TextView" />
+        android:id="@+id/progressBarGroup"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="65"
+            android:progressDrawable="@drawable/circle"
+            android:background="@drawable/circle_background"
+            android:layout_centerInParent="true"
+            />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bariol_regular"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:text="65%"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/percentage_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/bariol_regular"
+                android:text="of Budget used"
+                android:layout_below="@id/percentage"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/time_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/bariol_regular"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"
+                android:text="Mar 1 to Mar 31"
+                android:layout_below="@id/percentage_label"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/days_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/progressBar"
+            android:text="15"
+            android:fontFamily="@font/bariol_regular"
+            android:textColor="#000000"
+            android:layout_alignTop="@id/progressBar"/>
+        <TextView
+            android:id="@+id/days_left_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/progressBar"
+            android:layout_below="@id/days_left"
+            android:text="days to go"
+            android:fontFamily="@font/bariol_regular"
+            android:textSize="12sp"
+            android:textColor="#000000"/>
+
+    </RelativeLayout>
+
+
+
+
 
 
     <com.robinhood.spark.SparkView
         android:id="@+id/sparkview"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@id/progressBarGroup" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sparkview"
+        android:id="@+id/balance_layout"
+        android:background="@color/colorPrimary"
+        >
+
+        <TextView
+            android:id="@+id/total_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="TextView"
+            android:fontFamily="@font/bariol_regular"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/spent_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/total_expense"
+            android:text="Spent so far"
+            android:fontFamily="@font/bariol_regular"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="TextView"
+            android:fontFamily="@font/bariol_regular"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/balance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/balance"
+            android:text="Balance"
+            android:fontFamily="@font/bariol_regular"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/balance" />
+        android:layout_below="@id/balance_layout" />
 </RelativeLayout>

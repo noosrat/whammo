@@ -9,6 +9,7 @@ public class ABSA {
     static final int TRANSACTION_TYPE_DEPOSIT = 105;
     static final int TRANSACTION_TYPE_INFO = 106;
     static final int TRANSACTION_TYPE_PURCHASE = 107;
+    static final int TRANSACTION_TYPE_TRANSFER = 108;
 
     static final int CARD_TYPE_DEBIT = 201;
     static final int CARD_TYPE_CREDIT = 202;
@@ -82,6 +83,9 @@ public class ABSA {
         else if (transaction_type.equals("Pur")){
             return TRANSACTION_TYPE_PURCHASE;
         }
+        else if (transaction_type.equals("Transf")){
+            return TRANSACTION_TYPE_TRANSFER;
+        }
         else {
             return TRANSACTION_TYPE_PAYMENT;
         }
@@ -109,6 +113,8 @@ public class ABSA {
             card_code = "";
 
         this.card = retrieveCard(card_code);
+
+        if (!message.contains("Transf.")){
 
         if (this.card == CARD_TYPE_DEBIT) {
             message = message.substring(pos+2); //everything after card code
@@ -208,7 +214,8 @@ public class ABSA {
             this.transactionType = TRANSACTION_TYPE_INFO;
             this.reciepient = "";
             this.amount = "";
-        }
+        }}
+        else{this.transactionType = TRANSACTION_TYPE_TRANSFER;}
 
 
     }

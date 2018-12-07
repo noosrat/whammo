@@ -17,6 +17,7 @@ public class Transaction {
     static final int TRANSACTION_TYPE_DEPOSIT = 105;
     static final int TRANSACTION_TYPE_INFO = 106;
     static final int TRANSACTION_TYPE_PURCHASE = 107;
+    static final int TRANSACTION_TYPE_TRANSFER = 108;
 
     static final int CARD_TYPE_DEBIT = 201;
     static final int CARD_TYPE_CREDIT = 202;

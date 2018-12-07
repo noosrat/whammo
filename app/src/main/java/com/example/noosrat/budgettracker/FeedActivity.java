@@ -82,7 +82,7 @@ public class FeedActivity extends AppCompatActivity {
 
                         for (int m = 0; m < bundledSMSes.length; m++) {
                             Transaction transaction = new Transaction(bundledSMSes[m]);
-                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
+                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
                                 transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                                 if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                     transactionList.add(transaction);
@@ -100,7 +100,7 @@ public class FeedActivity extends AppCompatActivity {
                         }
                     } else {
                         Transaction transaction = new Transaction(smsLst.get(k));
-                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
+                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                             if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                 transactionList.add(transaction);

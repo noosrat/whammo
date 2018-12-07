@@ -35,7 +35,7 @@ public class FeedActivity extends AppCompatActivity {
     private float[] yData;
     private Random random;
     private float BUDGET = 20000;
-    private SparkView sparkView;
+    //private SparkView sparkView;
     ProgressBar budgetPercentage;
 
     Locale myLocale = new Locale("en", "ZA");
@@ -52,7 +52,7 @@ public class FeedActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.balance_action_bar);
 
-        sparkView = (SparkView) findViewById(R.id.sparkview);
+        //sparkView = (SparkView) findViewById(R.id.sparkview);
         budgetPercentage = findViewById(R.id.progressBar);
         TextView txtBalance = findViewById(R.id.balance);
         TextView txtExpense = findViewById(R.id.total_expense);
@@ -177,10 +177,10 @@ public class FeedActivity extends AppCompatActivity {
             }
 
         }
-        sparkView.setAdapter(new CustomSparkAdapter(sumDataList));
-        sparkView.setLineColor(Color.WHITE);
-        sparkView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        sparkView.setLineWidth(3);
+//        sparkView.setAdapter(new CustomSparkAdapter(sumDataList));
+//        sparkView.setLineColor(Color.WHITE);
+//        sparkView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//        sparkView.setLineWidth(3);
 
         return sum;
     }

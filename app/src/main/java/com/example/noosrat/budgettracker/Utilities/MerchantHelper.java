@@ -10,6 +10,10 @@ public class MerchantHelper {
 
     public Merchant getMerchant(String description) {
         String lowerDesc = description.toLowerCase().replaceAll(" ","");
+        lowerDesc = lowerDesc.replaceAll("snapscan","");
+        lowerDesc = lowerDesc.replaceAll("zap\\*","");
+        lowerDesc = lowerDesc.replaceAll("zap","");
+        lowerDesc = lowerDesc.replaceAll("purch","");
         switch (lowerDesc.charAt(0)) {
             case 'a':
                 if (lowerDesc.contains("activesushi")) {

@@ -104,7 +104,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sparkview"
         android:id="@+id/balance_layout"
-        android:background="@color/colorPrimary"
         >
 
         <TextView
@@ -115,7 +114,7 @@
             android:text="TextView"
             android:fontFamily="@font/bariol_regular"
             android:textSize="16sp"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/spent_label"
@@ -126,7 +125,7 @@
             android:text="Spent so far"
             android:fontFamily="@font/bariol_regular"
             android:textSize="12sp"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/balance"
@@ -136,7 +135,7 @@
             android:text="TextView"
             android:fontFamily="@font/bariol_regular"
             android:textSize="16sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/balance_label"
@@ -147,7 +146,7 @@
             android:text="Balance"
             android:fontFamily="@font/bariol_regular"
             android:textSize="12sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -1,6 +1,8 @@
 package com.example.noosrat.budgettracker;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +54,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                     .load(transactionArrayList.get(position).getTransaction().getMerchant().getIcon())
                     .apply(RequestOptions.circleCropTransform())
                     .into(transactionViewHolder.imgMerchant);
+
+            transactionViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    Intent i = new Intent(context, TransactionActivity.class);
+
+                    context.startActivity(i);                }
+            });
         }
         else{
             transactionViewHolder.tvDate.setText(transactionArrayList.get(position).getDisplayTimePeriodGroup());
@@ -70,6 +79,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
+        public CardView cardView;
         private TextView tvDescription;
         private TextView tvAmount;
         private TextView tvDate;
@@ -77,6 +87,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         TransactionViewHolder(View itemView) {
             super(itemView);
+
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             tvAmount = (TextView) itemView.findViewById(R.id.tvAmount);
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);

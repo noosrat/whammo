@@ -59,6 +59,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 @Override public void onClick(View v) {
                     Intent i = new Intent(context, TransactionActivity.class);
 
+                    i.putExtra("amount",(String) transactionArrayList.get(position).getTransaction().getAmount());
+                    i.putExtra("date",(String) transactionArrayList.get(position).getTransaction().getDate().toString());
+                    i.putExtra("recipient",(String) transactionArrayList.get(position).getTransaction().getMerchant().getName());
+                    i.putExtra("imageURL", (String) transactionArrayList.get(position).getTransaction().getMerchant().getIcon());
+
                     context.startActivity(i);                }
             });
         }

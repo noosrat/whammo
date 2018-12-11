@@ -22,7 +22,8 @@
                 android:fontFamily="@font/bariol_bold"
                 android:textColor="#646a73"
                 android:text="Today"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_marginStart="12dp"/>
 
 
         </LinearLayout>

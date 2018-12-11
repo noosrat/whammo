@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".TransactionActivity">
 
-    <com.google.android.gms.maps.MapView
+    <ImageView
         android:id="@+id/mapView"
         android:background="#a0a5ae"
         android:layout_width="match_parent"
+        android:scaleType="centerCrop"
         android:layout_height="200dp" />
 
     <ImageView
@@ -34,11 +35,33 @@
         android:layout_alignStart="@id/imageView"/>
 
     <TextView
+        android:id="@+id/priceLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RRR"
+        android:fontFamily="@font/bariol_regular"
+        android:textColor="#a0a5ae"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@id/recipient"
+        android:layout_alignBaseline="@id/recipient"/>
+
+    <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Monday 23 November, 17:22"
         android:fontFamily="@font/bariol_regular"
+        android:textColor="#a0a5ae"
+        android:layout_below="@id/address"
+        android:layout_marginTop="4dp"
+        android:layout_alignStart="@id/imageView"/>
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shop 4C, Cavendish Square, Dreyer Street, Claremont 7708"
+        android:fontFamily="@font/bariol_bold"
         android:textColor="#a0a5ae"
         android:layout_below="@id/recipient"
         android:layout_marginTop="4dp"

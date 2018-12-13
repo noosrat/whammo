@@ -79,5 +79,49 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"/>
 
+    <TextView
+        android:id="@+id/historyLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your {Merchant} History"
+        android:layout_below="@id/date"
+        android:fontFamily="@font/bariol_bold"
+        android:textColor="#646a73"
+        android:textSize="20sp"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="12dp"/>
+
+    <TextView
+        android:id="@+id/visitsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="Number of visits"
+        android:textSize="18sp"
+        android:layout_below="@id/historyLabel"/>
+
+    <TextView
+        android:id="@+id/visits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/historyLabel"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/bariol_regular"
+        android:text="42"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:background="#a0a5ae"
+        android:layout_below="@id/visits"
+        android:layout_marginTop="4dp"/>
+
+
 
 </RelativeLayout>

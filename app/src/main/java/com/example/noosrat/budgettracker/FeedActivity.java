@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 import com.example.noosrat.budgettracker.Utilities.CustomSparkAdapter;
 import com.example.noosrat.budgettracker.Utilities.MerchantHelper;
 import com.example.noosrat.budgettracker.Utilities.TimeAgo;
@@ -118,6 +119,8 @@ public class FeedActivity extends AppCompatActivity {
                     }
                 }
             }
+
+            SpentSingleton.transactionList = transactionList;
 
 
             RecyclerView rv = findViewById(R.id.recyclerView);

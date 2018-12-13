@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
@@ -30,6 +31,9 @@ public class TransactionActivity extends AppCompatActivity {
     private TextView tvDate;
     private ImageView imgMerchant;
     private ImageView imgMap;
+    private TextView txtHistory;
+    private TextView txtVisits;
+
 
 
     protected GeoDataClient mGeoDataClient;
@@ -51,6 +55,8 @@ public class TransactionActivity extends AppCompatActivity {
         imgMap = (ImageView) findViewById(R.id.mapView);
         tvPrice = (TextView) findViewById(R.id.priceLevel);
         tvAddress = (TextView) findViewById(R.id.address);
+        txtHistory = (TextView) findViewById(R.id.historyLabel);
+        txtVisits = (TextView) findViewById(R.id.visits);
 
 
         // Construct a GeoDataClient.
@@ -83,8 +89,20 @@ public class TransactionActivity extends AppCompatActivity {
                     tvAddress.setText(address);
                     tvPrice.setText(priceLevel);
                     tvDescription.setText(recipient);
+                    txtHistory.setText("Your "+recipient+" History");
                     tvAmount.setText(amount);
                     tvDate.setText(date);
+
+
+                    int count = 0;
+
+                    for (int i = 0; i < SpentSingleton.transactionList.size() ; i++){
+                        if (SpentSingleton.transactionList.get(i).getMerchant().getName().equals(recipient)){
+                            count++;
+                        }
+                    }
+
+                    txtVisits.setText(count+"");
 
                     String mapURL = "";
                     Log.i("blah blah", "Place found: " + myPlace.getName());

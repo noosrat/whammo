@@ -20,7 +20,10 @@
         android:layout_height="96dp"
         android:layout_below="@id/mapView"
         android:layout_marginTop="-48dp"
-        android:layout_marginStart="12dp"/>
+        android:layout_marginStart="12dp"
+        android:padding="4dp"
+        android:cropToPadding="true"
+        android:background="@drawable/circle_merchant_background"/>
 
     <TextView
         android:id="@+id/recipient"

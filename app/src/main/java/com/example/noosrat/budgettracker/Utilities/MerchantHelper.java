@@ -2,6 +2,8 @@ package com.example.noosrat.budgettracker.Utilities;
 
 import com.example.noosrat.budgettracker.POJO.Merchant.Merchant;
 
+import java.util.Random;
+
 public class MerchantHelper {
 
     public MerchantHelper() {
@@ -13,6 +15,7 @@ public class MerchantHelper {
         lowerDesc = lowerDesc.replaceAll("snapscan","");
         lowerDesc = lowerDesc.replaceAll("zap\\*","");
         lowerDesc = lowerDesc.replaceAll("zap","");
+        lowerDesc = lowerDesc.replaceAll("paydzapper\\*","");
         lowerDesc = lowerDesc.replaceAll("purch","");
         switch (lowerDesc.charAt(0)) {
             case 'a':
@@ -151,7 +154,22 @@ public class MerchantHelper {
             default:
                 return new Merchant(description, "");
         }
-        return new Merchant(description, "https://api.adorable.io/avatars/285/"+description+".png");
+        return new Merchant(description, "https://ui-avatars.com/api/?name="+description.replace(" ", "+")+"&size=128&background="+randColor(description)+"&color=fff");
 
+    }
+
+    private String randColor(String name) {
+
+        // create random object - reuse this as often as possible
+        Random random = new Random();
+
+        // create a big random number - maximum is ffffff (hex) = 16777215 (dez)
+        int nextInt = random.nextInt(0xffffff + 1);
+
+        // format it as hexadecimal string (with hashtag and leading zeros)
+        String colorCode = String.format("%06x", nextInt);
+
+        // print it
+        return  colorCode;
     }
 }

@@ -33,6 +33,7 @@ public class TransactionActivity extends AppCompatActivity {
     private ImageView imgMap;
     private TextView txtHistory;
     private TextView txtVisits;
+    private TextView txtAverage;
 
 
 
@@ -57,6 +58,7 @@ public class TransactionActivity extends AppCompatActivity {
         tvAddress = (TextView) findViewById(R.id.address);
         txtHistory = (TextView) findViewById(R.id.historyLabel);
         txtVisits = (TextView) findViewById(R.id.visits);
+        txtAverage = (TextView) findViewById(R.id.average);
 
 
         // Construct a GeoDataClient.
@@ -95,14 +97,18 @@ public class TransactionActivity extends AppCompatActivity {
 
 
                     int count = 0;
+                    float totalExpense = 0;
 
                     for (int i = 0; i < SpentSingleton.transactionList.size() ; i++){
                         if (SpentSingleton.transactionList.get(i).getMerchant().getName().equals(recipient)){
                             count++;
+                            totalExpense = totalExpense + SpentSingleton.transactionList.get(i).getNumberAmount();
                         }
                     }
 
                     txtVisits.setText(count+"");
+                    txtAverage.setText(SpentSingleton.currencyFormat.format( totalExpense/count));
+
 
                     String mapURL = "";
                     Log.i("blah blah", "Place found: " + myPlace.getName());

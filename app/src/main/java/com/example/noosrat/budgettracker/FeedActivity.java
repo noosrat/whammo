@@ -39,9 +39,6 @@ public class FeedActivity extends AppCompatActivity {
     //private SparkView sparkView;
     ProgressBar budgetPercentage;
 
-    Locale myLocale = new Locale("en", "ZA");
-    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(myLocale);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,11 +134,8 @@ public class FeedActivity extends AppCompatActivity {
         expense = calculateExpenses(transactionList);
         float balance = BUDGET - expense;
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setRoundingMode(RoundingMode.CEILING);
-
-        txtExpense.setText(currencyFormat.format(expense));
-        txtBalance.setText(currencyFormat.format(balance));
+        txtExpense.setText(SpentSingleton.currencyFormat.format(expense));
+        txtBalance.setText(SpentSingleton.currencyFormat.format(balance));
 
         budgetPercentage.setMax((int) BUDGET);
         budgetPercentage.setProgress((int) expense);
@@ -162,7 +156,7 @@ public class FeedActivity extends AppCompatActivity {
 
         txtDaysLeft.setText(diff+"");
 
-        String shortMonth = cal.getDisplayName(Calendar.MONTH,Calendar.SHORT,myLocale);
+        String shortMonth = cal.getDisplayName(Calendar.MONTH,Calendar.SHORT,SpentSingleton.myLocale);
         String duration = shortMonth +" 1 to " + shortMonth +" " +cal.getActualMaximum(Calendar.DATE);
 
         txtPeriod.setText(duration);

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SpentUtilities {
@@ -73,11 +74,14 @@ public class SpentUtilities {
 
         ArrayList<SMS> lstSms = new ArrayList<SMS>();
 
-        Date monthStart = new Date();
-        monthStart.setDate(1);
-        monthStart.setHours(0);
-        monthStart.setMinutes(0);
-        monthStart.setSeconds(0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date monthStart = calendar.getTime();
 
         long millis = monthStart.getTime();
 

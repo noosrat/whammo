@@ -156,6 +156,37 @@
         android:layout_below="@id/average"
         android:layout_marginTop="4dp"/>
 
+    <TextView
+        android:id="@+id/averageMonthLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="Average Monthly Spend"
+        android:textSize="18sp"
+        android:layout_below="@id/averageLabel"/>
+
+    <TextView
+        android:id="@+id/averageMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/averageLabel"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/bariol_regular"
+        android:text="R128.56"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:background="#a0a5ae"
+        android:layout_below="@id/averageMonth"
+        android:layout_marginTop="4dp"/>
+
 
 
 </RelativeLayout>

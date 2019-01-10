@@ -34,7 +34,7 @@ public class TransactionActivity extends AppCompatActivity {
     private TextView txtHistory;
     private TextView txtVisits;
     private TextView txtAverage;
-
+    private TextView txtAverageMonth;
 
 
     protected GeoDataClient mGeoDataClient;
@@ -59,6 +59,7 @@ public class TransactionActivity extends AppCompatActivity {
         txtHistory = (TextView) findViewById(R.id.historyLabel);
         txtVisits = (TextView) findViewById(R.id.visits);
         txtAverage = (TextView) findViewById(R.id.average);
+        txtAverageMonth = (TextView) findViewById(R.id.averageMonth);
 
 
         // Construct a GeoDataClient.
@@ -87,11 +88,10 @@ public class TransactionActivity extends AppCompatActivity {
                     String recipient = (String) getIntent().getExtras().get("recipient");
 
 
-
                     tvAddress.setText(address);
                     tvPrice.setText(priceLevel);
                     tvDescription.setText(recipient);
-                    txtHistory.setText("Your "+recipient+" History");
+                    txtHistory.setText("Your " + recipient + " History");
                     tvAmount.setText(amount);
                     tvDate.setText(date);
 
@@ -99,15 +99,16 @@ public class TransactionActivity extends AppCompatActivity {
                     int count = 0;
                     float totalExpense = 0;
 
-                    for (int i = 0; i < SpentSingleton.transactionList.size() ; i++){
-                        if (SpentSingleton.transactionList.get(i).getMerchant().getName().equals(recipient)){
+                    for (int i = 0; i < SpentSingleton.transactionList.size(); i++) {
+                        if (SpentSingleton.transactionList.get(i).getMerchant().getName().equals(recipient)) {
                             count++;
                             totalExpense = totalExpense + SpentSingleton.transactionList.get(i).getNumberAmount();
                         }
                     }
 
-                    txtVisits.setText(count+"");
-                    txtAverage.setText(SpentSingleton.currencyFormat.format( totalExpense/count));
+                    txtVisits.setText(count + "");
+                    txtAverage.setText(SpentSingleton.currencyFormat.format(totalExpense / count));
+                    txtAverageMonth.setText(SpentSingleton.currencyFormat.format(totalExpense / 6));
 
 
                     String mapURL = "";
@@ -169,7 +170,9 @@ public class TransactionActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
                         PlacePhotoResponse photo = task.getResult();
                         Bitmap bitmap = photo.getBitmap();
-                        imgMap.setImageBitmap(bitmap);
+                        Glide.with(TransactionActivity.this)
+                                .load(bitmap)
+                                .into(imgMap);
                     }
                 });
             }

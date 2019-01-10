@@ -2,15 +2,6 @@ package com.example.noosrat.budgettracker;
 
 public class ABSA {
 
-    static final int TRANSACTION_TYPE_CASH = 101;
-    static final int TRANSACTION_TYPE_EFT = 102;
-    static final int TRANSACTION_TYPE_DEBIT_ORDER = 103;
-    static final int TRANSACTION_TYPE_PAYMENT = 104;
-    static final int TRANSACTION_TYPE_DEPOSIT = 105;
-    static final int TRANSACTION_TYPE_INFO = 106;
-    static final int TRANSACTION_TYPE_PURCHASE = 107;
-    static final int TRANSACTION_TYPE_TRANSFER = 108;
-
     static final int CARD_TYPE_DEBIT = 201;
     static final int CARD_TYPE_CREDIT = 202;
     static final int CARD_TYPE_NOCARD = 203;
@@ -72,22 +63,22 @@ public class ABSA {
 
     private int retrieveTransactionType(String transaction_type) {
         if (transaction_type.equals("Pmnt")) {
-            return TRANSACTION_TYPE_EFT;
+            return Transaction.TRANSACTION_TYPE_EFT;
         }
         else if (transaction_type.equals("Sch t")){
-            return TRANSACTION_TYPE_DEBIT_ORDER;
+            return Transaction.TRANSACTION_TYPE_DEBIT_ORDER;
         }
         else if (transaction_type.equals("Dep")){
-            return TRANSACTION_TYPE_DEPOSIT;
+            return Transaction.TRANSACTION_TYPE_DEPOSIT;
         }
         else if (transaction_type.equals("Pur")){
-            return TRANSACTION_TYPE_PURCHASE;
+            return Transaction.TRANSACTION_TYPE_PURCHASE;
         }
         else if (transaction_type.equals("Transf")){
-            return TRANSACTION_TYPE_TRANSFER;
+            return Transaction.TRANSACTION_TYPE_TRANSFER;
         }
         else {
-            return TRANSACTION_TYPE_PAYMENT;
+            return Transaction.TRANSACTION_TYPE_PAYMENT;
         }
 
 
@@ -124,7 +115,7 @@ public class ABSA {
             String transaction_type = message.substring(0, pos); //transaction type
             this.transactionType = retrieveTransactionType(transaction_type);
 
-            if ((this.transactionType == TRANSACTION_TYPE_EFT) || (this.transactionType == TRANSACTION_TYPE_PURCHASE)){
+            if ((this.transactionType == Transaction.TRANSACTION_TYPE_EFT) || (this.transactionType == Transaction.TRANSACTION_TYPE_PURCHASE)){
                 message = message.substring(pos+2); //everything after transaction type
 
                 pos = message.indexOf(",");
@@ -140,7 +131,7 @@ public class ABSA {
 
 
             }
-            else if (this.transactionType == TRANSACTION_TYPE_DEBIT_ORDER){
+            else if (this.transactionType == Transaction.TRANSACTION_TYPE_DEBIT_ORDER){
                 message = message.substring(pos+2); //everything after transaction type
 
                 pos = message.indexOf(",");
@@ -154,7 +145,7 @@ public class ABSA {
                 pos = message.indexOf(".")+3;
                 this.amount =  message.substring(0, pos); //amount
             }
-            else if (this.transactionType == TRANSACTION_TYPE_PAYMENT){
+            else if (this.transactionType == Transaction.TRANSACTION_TYPE_PAYMENT){
                 pos = message.indexOf("reserved");
                 if (pos > -1) {
                     this.reciepient = message.substring(9, pos); //recipient
@@ -165,7 +156,7 @@ public class ABSA {
                     this.amount = message.substring(0, pos); //amount
                 }
                 else
-                    this.transactionType = TRANSACTION_TYPE_INFO;
+                    this.transactionType = Transaction.TRANSACTION_TYPE_INFO;
 
             }
         }
@@ -178,7 +169,7 @@ public class ABSA {
             String transaction_type = message.substring(0, pos); //transaction type
             this.transactionType = retrieveTransactionType(transaction_type);
 
-            if (this.transactionType == TRANSACTION_TYPE_PURCHASE){
+            if (this.transactionType == Transaction.TRANSACTION_TYPE_PURCHASE){
 
                 message = message.substring(pos+2); //everything after transaction type
 
@@ -194,7 +185,7 @@ public class ABSA {
                 this.amount =  message.substring(0, pos); //amount
 
             }
-            else if (this.transactionType == TRANSACTION_TYPE_DEBIT_ORDER){
+            else if (this.transactionType == Transaction.TRANSACTION_TYPE_DEBIT_ORDER){
                 message = message.substring(pos+2); //everything after transaction type
 
                 pos = message.indexOf(",");
@@ -211,11 +202,11 @@ public class ABSA {
 
         }
         else {
-            this.transactionType = TRANSACTION_TYPE_INFO;
+            this.transactionType = Transaction.TRANSACTION_TYPE_INFO;
             this.reciepient = "";
             this.amount = "";
         }}
-        else{this.transactionType = TRANSACTION_TYPE_TRANSFER;}
+        else{this.transactionType = Transaction.TRANSACTION_TYPE_TRANSFER;}
 
 
     }

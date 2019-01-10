@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -75,12 +76,13 @@ public class FeedActivity extends AppCompatActivity {
                 String today = "";
 
                 for (int k = 0; k < smsLst.size(); k++) {
+                    Log.i("orig sms", smsLst.get(k).getMessage());
                     if (SpentUtilities.isBundledSms(smsLst.get(k).getMessage())) {
                         SMS[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
 
                         for (int m = 0; m < bundledSMSes.length; m++) {
                             Transaction transaction = new Transaction(bundledSMSes[m]);
-                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
+                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO  && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
                                 transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                                 if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                     transactionList.add(transaction);
@@ -98,7 +100,7 @@ public class FeedActivity extends AppCompatActivity {
                         }
                     } else {
                         Transaction transaction = new Transaction(smsLst.get(k));
-                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO) {
+                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                             if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                 transactionList.add(transaction);

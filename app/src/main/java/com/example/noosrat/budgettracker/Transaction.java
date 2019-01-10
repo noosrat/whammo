@@ -18,6 +18,8 @@ public class Transaction {
     static final int TRANSACTION_TYPE_INFO = 106;
     static final int TRANSACTION_TYPE_PURCHASE = 107;
     static final int TRANSACTION_TYPE_TRANSFER = 108;
+    static final int TRANSACTION_TYPE_APP_PURCHASE = 109;
+    static final int TRANSACTION_TYPE_UNKNOWN = 110;
 
     static final int CARD_TYPE_DEBIT = 201;
     static final int CARD_TYPE_CREDIT = 202;
@@ -96,6 +98,8 @@ public class Transaction {
             return "INFO";
         if (transactionType == TRANSACTION_TYPE_PURCHASE)
             return "PURCHASE";
+        if (transactionType == TRANSACTION_TYPE_APP_PURCHASE)
+            return "APP PURCHASE";
 
 
         return "";

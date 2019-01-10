@@ -1,14 +1,8 @@
 package com.example.noosrat.budgettracker;
 
-public class FNB {
+import android.util.Log;
 
-    static final int TRANSACTION_TYPE_CASH = 101;
-    static final int TRANSACTION_TYPE_EFT = 102;
-    static final int TRANSACTION_TYPE_DEBIT_ORDER = 103;
-    static final int TRANSACTION_TYPE_PAYMENT = 104;
-    static final int TRANSACTION_TYPE_DEPOSIT = 105;
-    static final int TRANSACTION_TYPE_INFO = 106;
-    static final int TRANSACTION_TYPE_PURCHASE = 107;
+public class FNB {
 
     static final int CARD_TYPE_DEBIT = 201;
     static final int CARD_TYPE_CREDIT = 202;
@@ -48,14 +42,14 @@ public class FNB {
     }
 
 
-    private void calculateAll(){
+    private void calculateAll() {
 
         int pos = 0;
         String message = this.originalMessage;
 
 
         pos = message.indexOf(")"); //end of FNB:-)
-        message = message.substring(pos+2);
+        message = message.substring(pos + 2);
 
 
 
@@ -64,42 +58,57 @@ public class FNB {
         this.amount = message.substring(0, pos);
 
         //GETTING IN or OUT
-        pos = message.indexOf("paid to");
+        pos = message.indexOf("We have noticed that");
         if (pos == -1) {
-            pos = message.indexOf("reserved for purchase");
+            pos = message.indexOf("paid to");
             if (pos == -1) {
-                pos = message.indexOf("Paid from");
+                pos = message.indexOf("reserved for purchase");
                 if (pos == -1) {
-                    pos = message.indexOf("withdrawn");
+                    pos = message.indexOf("Paid from");
                     if (pos == -1) {
-                        pos = message.indexOf("paid from");
-                        if (pos == -1)
-                            transactionType = TRANSACTION_TYPE_INFO;
-                        else{
-                            transactionType = TRANSACTION_TYPE_EFT;
-                            String temp = message.substring(message.indexOf("Ref.")+"Ref.".length());
-                            this.reciepient = temp.substring(0,temp.indexOf(". "));
+                        pos = message.indexOf("withdrawn");
+                        if (pos == -1) {
+                            pos = message.indexOf("paid from");
+                            if (pos == -1)
+                                transactionType = Transaction.TRANSACTION_TYPE_INFO;
+                            else {
+                                int ref = message.indexOf("Ref.");
+                                if (ref == -1) {
+                                    transactionType = Transaction.TRANSACTION_TYPE_APP_PURCHASE;
+                                    this.reciepient = message.substring(message.indexOf("@ ") + "@ ".length(), message.indexOf(". "));
+                                }
+                                else {
+                                    transactionType = Transaction.TRANSACTION_TYPE_EFT;
+                                    String temp = message.substring(message.indexOf("Ref.") + "Ref.".length());
+                                    this.reciepient = temp.substring(0, temp.indexOf(". "));
+                                }
+                            }
+                        } else {
+                            transactionType = Transaction.TRANSACTION_TYPE_CASH;
+                            this.reciepient = "CASH";
+                        }
+                    } else {
+                        int ref = message.indexOf("Ref.");
+                        if (ref == -1) {
+                            transactionType = Transaction.TRANSACTION_TYPE_UNKNOWN;
+                            Log.i("UNKNOWN SMS TYPE",message);
+                        }
+                        else {
+                            transactionType = Transaction.TRANSACTION_TYPE_DEBIT_ORDER;
+                            this.reciepient = message.substring(message.indexOf("Ref.") + "Ref.".length(), message.indexOf("Paid"));
                         }
                     }
-                    else{
-                        transactionType = TRANSACTION_TYPE_CASH;
-                        this.reciepient = "CASH";
-                    }
+                } else {
+                    transactionType = Transaction.TRANSACTION_TYPE_PAYMENT;
+                    this.reciepient = message.substring(message.indexOf("@ ") + "@ ".length(), message.indexOf("from"));
                 }
-                else{
-                    transactionType = TRANSACTION_TYPE_DEBIT_ORDER;
-                    this.reciepient = message.substring(message.indexOf("Ref.")+"Ref.".length(),message.indexOf("Paid"));
-                }
+            } else {
+                transactionType = Transaction.TRANSACTION_TYPE_DEPOSIT;
+                String temp = message.substring(message.indexOf("Eft. Ref.") + "Eft. Ref.".length());
+                this.reciepient = temp.substring(0, temp.indexOf(". "));
             }
-            else{
-                transactionType = TRANSACTION_TYPE_PAYMENT;
-                this.reciepient = message.substring(message.indexOf("@ ")+"@ ".length(),message.indexOf("from"));
-            }
-        }
-        else{
-            transactionType = TRANSACTION_TYPE_DEPOSIT;
-            String temp = message.substring(message.indexOf("Eft. Ref.")+ "Eft. Ref.".length());
-            this.reciepient = temp.substring(0,temp.indexOf(". "));
+        } else {
+            transactionType = Transaction.TRANSACTION_TYPE_INFO;
         }
 
     }

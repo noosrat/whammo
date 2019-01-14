@@ -3,9 +3,7 @@ package com.example.noosrat.budgettracker;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +45,7 @@ public class PagerActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_feed:
                     toolbar.setTitle("Transactions");
-                    fragment = new FeedActivity();
+                    fragment = new FeedFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_settings:

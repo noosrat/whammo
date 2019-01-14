@@ -72,119 +72,23 @@ public class FeedActivity extends Fragment {
 //        getSupportActionBar().setCustomView(R.layout.balance_action_bar);
 
         //sparkView = (SparkView) findViewById(R.id.sparkview);
-        budgetPercentage = view.findViewById(R.id.progressBar);
         TextView txtBalance = view.findViewById(R.id.balance);
         TextView txtExpense = view.findViewById(R.id.total_expense);
-        TextView txtExpensePercentage = view.findViewById(R.id.percentage);
-        TextView txtDaysLeft = view.findViewById(R.id.days_left);
-        TextView txtPeriod = view.findViewById(R.id.time_period);
+
         float expense = 0;
-
-        ArrayList<Transaction> transactionList = new ArrayList<>();
-        ArrayList<FeedItem> feedItemsList = new ArrayList<>();
-
-        if (ContextCompat.checkSelfPermission(c.getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
-
-            ContentResolver cr = c.getContentResolver();
-
-            ArrayList<SMS> smsLst = SpentUtilities.getSMSes(new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
-
-            if (smsLst != null) {
-
-                MerchantHelper mh = new MerchantHelper();
-
-                String today = "";
-
-                for (int k = 0; k < smsLst.size(); k++) {
-                    Log.i("orig sms", smsLst.get(k).getMessage());
-                    if (SpentUtilities.isBundledSms(smsLst.get(k).getMessage())) {
-                        SMS[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
-
-                        for (int m = 0; m < bundledSMSes.length; m++) {
-                            Transaction transaction = new Transaction(bundledSMSes[m]);
-                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO  && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
-                                transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                                if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
-                                    transactionList.add(transaction);
-                                    feedItemsList.add(new FeedItem(transaction));
-                                }
-                                else{
-                                    feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
-                                    transactionList.add(transaction);
-                                    feedItemsList.add(new FeedItem(transaction));
-                                    today = TimeAgo.getTimeAgo(transaction.getDate());
-                                }
-
-                            }
-
-                        }
-                    } else {
-                        Transaction transaction = new Transaction(smsLst.get(k));
-                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
-                            transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                            if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
-                                transactionList.add(transaction);
-                                feedItemsList.add(new FeedItem(transaction));
-
-                            }
-                            else{
-                                feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
-                                transactionList.add(transaction);
-                                feedItemsList.add(new FeedItem(transaction));
-                                today = TimeAgo.getTimeAgo(transaction.getDate());
-                            }
-
-                        }
-                    }
-                }
-            }
-
-            SpentSingleton.transactionList = transactionList;
-
-
-            RecyclerView rv = view.findViewById(R.id.recyclerView);
-
-
-
-            LinearLayoutManager llm = new LinearLayoutManager(c);
-            rv.setLayoutManager(llm);
-            TransactionAdapter adapter = new TransactionAdapter(feedItemsList, c);
-
-            rv.setAdapter(adapter);
-
-
-        }
-
-        expense = calculateExpenses(transactionList);
+        expense = calculateExpenses(SpentSingleton.transactionList);
         float balance = BUDGET - expense;
 
         txtExpense.setText(SpentSingleton.currencyFormat.format(expense));
         txtBalance.setText(SpentSingleton.currencyFormat.format(balance));
 
-        budgetPercentage.setMax((int) BUDGET);
-        budgetPercentage.setProgress((int) expense);
+        RecyclerView rv = view.findViewById(R.id.recyclerView);
 
-        int expensePercentage = Math.round(expense/BUDGET*100);
-        txtExpensePercentage.setText(expensePercentage+"%");
+        LinearLayoutManager llm = new LinearLayoutManager(c);
+        rv.setLayoutManager(llm);
+        TransactionAdapter adapter = new TransactionAdapter(SpentSingleton.feedItemsList, c);
 
-        Calendar cal = Calendar.getInstance();
-
-        Date today = new Date();
-        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-
-        Date lastDayOfMonth = cal.getTime();
-
-
-        long diffInMillies = Math.abs(lastDayOfMonth.getTime() - today.getTime());
-        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-        txtDaysLeft.setText(diff+"");
-
-        String shortMonth = cal.getDisplayName(Calendar.MONTH,Calendar.SHORT,SpentSingleton.myLocale);
-        String duration = shortMonth +" 1 to " + shortMonth +" " +cal.getActualMaximum(Calendar.DATE);
-
-        txtPeriod.setText(duration);
-
+        rv.setAdapter(adapter);
     }
 
     public float calculateExpenses(ArrayList<Transaction> transactionList) {

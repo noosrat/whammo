@@ -25,7 +25,12 @@ public class PagerActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        toolbar.setTitle("Shop");
+        Fragment fragment;
+        toolbar.setTitle("Dashboard");
+        fragment = new DashboardFragment();
+        loadFragment(fragment);
+
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -38,6 +43,7 @@ public class PagerActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     toolbar.setTitle("Dashboard");
                     fragment = new DashboardFragment();
+                    loadFragment(fragment);
                     return true;
                 case R.id.navigation_feed:
                     toolbar.setTitle("Transactions");

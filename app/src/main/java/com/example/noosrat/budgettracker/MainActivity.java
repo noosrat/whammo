@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    Intent i = new Intent(MainActivity.this, FeedActivity.class);
+                    Intent i = new Intent(MainActivity.this, PagerActivity.class);
 
                     startActivity(i);
                 } else {

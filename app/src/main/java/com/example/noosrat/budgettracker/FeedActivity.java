@@ -5,12 +5,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,7 +36,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
-public class FeedActivity extends AppCompatActivity {
+public class FeedActivity extends Fragment {
 
     private ArrayList<Float> sumDataList = new ArrayList<>();
     private float[] yData;
@@ -41,31 +46,46 @@ public class FeedActivity extends AppCompatActivity {
     ProgressBar budgetPercentage;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //Remove title bar
-        setContentView(R.layout.activity_feed);
+    public FeedActivity() {
+        // Required empty public constructor
+    }
 
-        getSupportActionBar().setElevation(0);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.balance_action_bar);
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_feed, container, false);
+    }
+
+
+    //@Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        //super.onCreate(savedInstanceState);
+        //Remove title bar
+//        setContentView(R.layout.activity_feed);
+
+        final FragmentActivity c = getActivity();
+//
+//        getSupportActionBar().setElevation(0);
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.balance_action_bar);
 
         //sparkView = (SparkView) findViewById(R.id.sparkview);
-        budgetPercentage = findViewById(R.id.progressBar);
-        TextView txtBalance = findViewById(R.id.balance);
-        TextView txtExpense = findViewById(R.id.total_expense);
-        TextView txtExpensePercentage = findViewById(R.id.percentage);
-        TextView txtDaysLeft = findViewById(R.id.days_left);
-        TextView txtPeriod = findViewById(R.id.time_period);
+        budgetPercentage = view.findViewById(R.id.progressBar);
+        TextView txtBalance = view.findViewById(R.id.balance);
+        TextView txtExpense = view.findViewById(R.id.total_expense);
+        TextView txtExpensePercentage = view.findViewById(R.id.percentage);
+        TextView txtDaysLeft = view.findViewById(R.id.days_left);
+        TextView txtPeriod = view.findViewById(R.id.time_period);
         float expense = 0;
 
         ArrayList<Transaction> transactionList = new ArrayList<>();
         ArrayList<FeedItem> feedItemsList = new ArrayList<>();
 
-        if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(c.getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
-            ContentResolver cr = getContentResolver();
+            ContentResolver cr = c.getContentResolver();
 
             ArrayList<SMS> smsLst = SpentUtilities.getSMSes(new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
 
@@ -122,11 +142,13 @@ public class FeedActivity extends AppCompatActivity {
             SpentSingleton.transactionList = transactionList;
 
 
-            RecyclerView rv = findViewById(R.id.recyclerView);
+            RecyclerView rv = view.findViewById(R.id.recyclerView);
 
-            LinearLayoutManager llm = new LinearLayoutManager(FeedActivity.this);
+
+
+            LinearLayoutManager llm = new LinearLayoutManager(c);
             rv.setLayoutManager(llm);
-            TransactionAdapter adapter = new TransactionAdapter(feedItemsList, FeedActivity.this);
+            TransactionAdapter adapter = new TransactionAdapter(feedItemsList, c);
 
             rv.setAdapter(adapter);
 

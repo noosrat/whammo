@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -128,14 +130,23 @@ public class TransactionActivity extends AppCompatActivity {
         String imageURL = (String) getIntent().getExtras().get("imageURL");
 //        String amount = (String) getIntent().getExtras().get("amount");
 //        String date = (String) getIntent().getExtras().get("date");
-//        String recipient = (String) getIntent().getExtras().get("recipient");
+        String recipient = (String) getIntent().getExtras().get("recipient");
 
 
+        if (imageURL != null) {
+            Glide.with(this)
+                    .load(imageURL)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgMerchant);
+        }
+        else {
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int color = generator.getColor(recipient);
 
-        Glide.with(this)
-                .load(imageURL)
-                .apply(RequestOptions.circleCropTransform())
-                .into(imgMerchant);
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(recipient.charAt(0) + "", color);
+        imgMerchant.setImageDrawable(drawable);
+        }
 //
 //        Glide.with(this)
 //                .load(mapURL)

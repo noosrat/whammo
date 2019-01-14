@@ -154,7 +154,7 @@ public class MerchantHelper {
             default:
                 return new Merchant(description, "");
         }
-        return new Merchant(description, "https://ui-avatars.com/api/?name="+description.replace(" ", "+")+"&size=128&background="+randColor(description)+"&color=fff");
+        return new Merchant(description);
 
     }
 

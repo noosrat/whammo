@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -50,10 +52,21 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             transactionViewHolder.tvAmount.setText((String) transactionArrayList.get(position).getTransaction().getAmount());
             transactionViewHolder.tvDate.setText((String) transactionArrayList.get(position).getTransaction().getDate().toString());
             transactionViewHolder.tvDescription.setText((String) transactionArrayList.get(position).getTransaction().getMerchant().getName());
-            Glide.with(context)
-                    .load(transactionArrayList.get(position).getTransaction().getMerchant().getIcon())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(transactionViewHolder.imgMerchant);
+            if (transactionArrayList.get(position).getTransaction().getMerchant().getIcon() != null){
+                Glide.with(context)
+                        .load(transactionArrayList.get(position).getTransaction().getMerchant().getIcon())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(transactionViewHolder.imgMerchant);
+            }
+            else {
+                ColorGenerator generator = ColorGenerator.MATERIAL;
+                int color = generator.getColor(transactionArrayList.get(position).getTransaction().getMerchant().getName());
+
+                TextDrawable drawable = TextDrawable.builder()
+                        .buildRound(transactionArrayList.get(position).getTransaction().getMerchant().getName().charAt(0) + "", color);
+                transactionViewHolder.imgMerchant.setImageDrawable(drawable);
+            }
+
 
             transactionViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {

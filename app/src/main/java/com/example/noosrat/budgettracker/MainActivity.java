@@ -17,12 +17,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.example.noosrat.budgettracker.POJO.Category;
 import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 import com.example.noosrat.budgettracker.Utilities.MerchantHelper;
 import com.example.noosrat.budgettracker.Utilities.TimeAgo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ArrayList<Transaction> transactionList = new ArrayList<>();
                     ArrayList<FeedItem> feedItemsList = new ArrayList<>();
+                    HashMap<Category, Float> categorySummaryMap = new HashMap<>();
 
                     if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
@@ -82,11 +85,23 @@ public class MainActivity extends AppCompatActivity {
                                             if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                                 transactionList.add(transaction);
                                                 feedItemsList.add(new FeedItem(transaction));
+                                                if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                                }
+                                                else{
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                                }
                                             }
                                             else{
                                                 feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                                 transactionList.add(transaction);
                                                 feedItemsList.add(new FeedItem(transaction));
+                                                if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                                }
+                                                else{
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                                }
                                                 today = TimeAgo.getTimeAgo(transaction.getDate());
                                             }
 
@@ -100,12 +115,24 @@ public class MainActivity extends AppCompatActivity {
                                         if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                             transactionList.add(transaction);
                                             feedItemsList.add(new FeedItem(transaction));
+                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                            }
+                                            else{
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                            }
 
                                         }
                                         else{
                                             feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                             transactionList.add(transaction);
                                             feedItemsList.add(new FeedItem(transaction));
+                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                            }
+                                            else{
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                            }
                                             today = TimeAgo.getTimeAgo(transaction.getDate());
                                         }
 
@@ -116,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
                         SpentSingleton.transactionList = transactionList;
                         SpentSingleton.feedItemsList = feedItemsList;
+                        SpentSingleton.categorySummaryMap = categorySummaryMap;
                     }
 
 

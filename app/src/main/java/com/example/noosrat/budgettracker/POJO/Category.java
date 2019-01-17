@@ -5,11 +5,19 @@ public class Category {
     private String name;
     private String icon;
     private String colour;
+    private int budget;
 
     public Category(String name, String icon, String colour) {
         this.name = name;
         this.icon = icon;
         this.colour = colour;
+    }
+
+    public Category(String name, String icon, String colour, int budget) {
+        this.name = name;
+        this.icon = icon;
+        this.colour = colour;
+        this.budget = budget;
     }
 
     public String getName() {
@@ -34,5 +42,13 @@ public class Category {
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
     }
 }

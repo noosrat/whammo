@@ -28,38 +28,14 @@ public class Merchant {
 
     public Merchant(String name) {
         this.name = name;
+        this.category = new Category("Other","", "");
     }
 
     public Merchant(String name, String url, int category) {
         this.name = name;
         this.icon = url;
-        
-        
 
-        if (category == CATEGORY_EATING_OUT)
-            this.category = new Category("Eating Out","", "");
-        else if (category == CATEGORY_ENTERTAINMENT)
-            this.category = new Category("Entertainment","", "");
-        else if (category == CATEGORY_GROCERIES)
-            this.category = new Category("Groceries","", "");
-        else if (category == CATEGORY_INSURANCE)
-            this.category = new Category("Insurance","", "");
-        else if (category == CATEGORY_RENT)
-            this.category = new Category("Rent","", "");
-        else if (category == CATEGORY_PETROL)
-            this.category = new Category("Petrol","", "");
-        else if (category == CATEGORY_TRAVEL)
-            this.category = new Category("Travel","", "");
-        else if (category == CATEGORY_CLOTHING)
-            this.category = new Category("Clothing","", "");
-        else if (category == CATEGORY_CAR)
-            this.category = new Category("Car","", "");
-        else if (category == CATEGORY_LIFESTYLE)
-            this.category = new Category("Lifestyle","", "");
-        else if (category == CATEGORY_PHONE)
-            this.category = new Category("Phone","", "");
-        else
-            this.category = new Category("Other","", "");
+        calculateCategory(category);
     }
 
     public String getName() {
@@ -86,6 +62,33 @@ public class Merchant {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    private void calculateCategory(int category){
+        if (category == CATEGORY_EATING_OUT)
+            this.category = new Category("Eating Out","", "");
+        else if (category == CATEGORY_ENTERTAINMENT)
+            this.category = new Category("Entertainment","", "");
+        else if (category == CATEGORY_GROCERIES)
+            this.category = new Category("Groceries","", "");
+        else if (category == CATEGORY_INSURANCE)
+            this.category = new Category("Insurance","", "");
+        else if (category == CATEGORY_RENT)
+            this.category = new Category("Rent","", "");
+        else if (category == CATEGORY_PETROL)
+            this.category = new Category("Petrol","", "");
+        else if (category == CATEGORY_TRAVEL)
+            this.category = new Category("Travel","", "");
+        else if (category == CATEGORY_CLOTHING)
+            this.category = new Category("Clothing","", "");
+        else if (category == CATEGORY_CAR)
+            this.category = new Category("Car","", "");
+        else if (category == CATEGORY_LIFESTYLE)
+            this.category = new Category("Lifestyle","", "");
+        else if (category == CATEGORY_PHONE)
+            this.category = new Category("Phone","", "");
+        else
+            this.category = new Category("Other","", "");
     }
 
     public Category getCategory() {

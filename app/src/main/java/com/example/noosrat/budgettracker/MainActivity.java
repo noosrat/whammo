@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ArrayList<Transaction> transactionList = new ArrayList<>();
                     ArrayList<FeedItem> feedItemsList = new ArrayList<>();
-                    HashMap<Category, Float> categorySummaryMap = new HashMap<>();
+                    HashMap<String, Float> categorySummaryMap = new HashMap<>();
 
                     if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
@@ -85,22 +85,22 @@ public class MainActivity extends AppCompatActivity {
                                             if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                                 transactionList.add(transaction);
                                                 feedItemsList.add(new FeedItem(transaction));
-                                                if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
-                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                                if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
                                                 }
                                                 else{
-                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
                                                 }
                                             }
                                             else{
                                                 feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                                 transactionList.add(transaction);
                                                 feedItemsList.add(new FeedItem(transaction));
-                                                if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
-                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                                if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
                                                 }
                                                 else{
-                                                    categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                                    categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
                                                 }
                                                 today = TimeAgo.getTimeAgo(transaction.getDate());
                                             }
@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
                                         if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                             transactionList.add(transaction);
                                             feedItemsList.add(new FeedItem(transaction));
-                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
-                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
                                             }
                                             else{
-                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
                                             }
 
                                         }
@@ -127,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
                                             feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                             transactionList.add(transaction);
                                             feedItemsList.add(new FeedItem(transaction));
-                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory()) == null) {
-                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), transaction.getNumberAmount());
+                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
                                             }
                                             else{
-                                                categorySummaryMap.put(transaction.getMerchant().getCategory(), categorySummaryMap.get(transaction.getMerchant().getCategory())+transaction.getNumberAmount());
+                                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
                                             }
                                             today = TimeAgo.getTimeAgo(transaction.getDate());
                                         }

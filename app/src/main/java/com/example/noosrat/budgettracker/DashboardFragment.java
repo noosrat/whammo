@@ -3,6 +3,9 @@ package com.example.noosrat.budgettracker;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,8 @@ public class DashboardFragment extends Fragment {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        final FragmentActivity c = getActivity();
+
         budgetPercentage = view.findViewById(R.id.progressBar);
         TextView txtBalance = view.findViewById(R.id.balance);
         TextView txtExpense = view.findViewById(R.id.total_expense);
@@ -83,6 +88,14 @@ public class DashboardFragment extends Fragment {
         String duration = shortMonth +" 1 to " + shortMonth +" " +cal.getActualMaximum(Calendar.DATE);
 
         txtPeriod.setText(duration);
+
+        RecyclerView rv = view.findViewById(R.id.recyclerView);
+
+        LinearLayoutManager llm = new LinearLayoutManager(c);
+        rv.setLayoutManager(llm);
+        CategoryAdapter adapter = new CategoryAdapter(SpentSingleton.categorySummaryMap, c);
+
+        rv.setAdapter(adapter);
     }
 
     public float calculateExpenses(ArrayList<Transaction> transactionList) {

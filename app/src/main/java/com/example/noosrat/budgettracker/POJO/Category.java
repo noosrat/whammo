@@ -7,6 +7,9 @@ public class Category {
     private String colour;
     private int budget;
 
+    public Category() {
+    }
+
     public Category(String name, String icon, String colour) {
         this.name = name;
         this.icon = icon;

@@ -3,6 +3,7 @@ package com.example.noosrat.budgettracker.POJO.Merchant;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.noosrat.budgettracker.POJO.Category;
+import com.google.firebase.database.Exclude;
 
 public class Merchant {
 
@@ -50,6 +51,7 @@ public class Merchant {
         return icon;
     }
 
+    @Exclude
     public TextDrawable getIconBitmap() {
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
 

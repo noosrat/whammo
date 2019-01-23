@@ -1,14 +1,17 @@
 package com.example.noosrat.budgettracker;
 
 import com.example.noosrat.budgettracker.POJO.Merchant.Merchant;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
 
+@IgnoreExtraProperties
 public class Transaction {
 
-    public static String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "PURCHASE"};
-    public static String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
-    public static String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
+    public static final String[] TRANSACTION_TYPES = {"EFT", "DEBIT ORDER", "PAYMENT", "DEPOSIT", "INFO", "PURCHASE"};
+    public static final String[] CARD_TYPES = {"DEBIT", "CREDIT", "NOCARD"};
+    public static final String[] CARD_CODES = {"CHEQ5962", "CCRD0019"};
 
     static final int TRANSACTION_TYPE_CASH = 101;
     static final int TRANSACTION_TYPE_EFT = 102;
@@ -78,10 +81,12 @@ public class Transaction {
 
     }
 
+    @Exclude
     public float getNumberAmount() {
         return Math.abs(Float.parseFloat (amount.replace(",","").substring(1)));
     }
 
+    @Exclude
     public String getTransactionTypeDisplay() {
 
         if (transactionType == TRANSACTION_TYPE_CASH)
@@ -137,6 +142,10 @@ public class Transaction {
         this.merchant = merchant;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public String getAmount() {
         return amount;
     }
@@ -149,6 +158,7 @@ public class Transaction {
         return message;
     }
 
+    @Exclude
     public String getCardDisplay() {
 
         if (card == CARD_TYPE_DEBIT)

@@ -18,15 +18,21 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.example.noosrat.budgettracker.POJO.Category;
+import com.example.noosrat.budgettracker.POJO.Merchant.Merchant;
 import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 import com.example.noosrat.budgettracker.Utilities.MerchantHelper;
 import com.example.noosrat.budgettracker.Utilities.TimeAgo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+    DatabaseReference mDatabase;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        userId = mDatabase.push().getKey();
 
         SpentSingleton.categoryMap.put("Eating Out", new Category("Eating Out","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Eating%20Out.png?alt=media&token=b5e8bdc3-b932-42ac-9987-d4806404c30f", "#ECEC45", 10000));
         SpentSingleton.categoryMap.put("Entertainment", new Category("Entertainment","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Entertainment.png?alt=media&token=0103d4cc-7155-44e0-ba59-e753928f8d1d", "#FF9B00", 5000));
@@ -97,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                                             if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                                 transactionList.add(transaction);
+                                                String otherid = mDatabase.child(userId).push().getKey();
+                                                mDatabase.child(userId).child(otherid).setValue(transaction);
                                                 feedItemsList.add(new FeedItem(transaction));
                                                 if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
                                                     categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
@@ -108,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
                                             else{
                                                 feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                                 transactionList.add(transaction);
+                                                String otherid = mDatabase.child(userId).push().getKey();
+                                                mDatabase.child(userId).child(otherid).setValue(transaction);
                                                 feedItemsList.add(new FeedItem(transaction));
                                                 if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
                                                     categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
@@ -127,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
                                         transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                                         if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
                                             transactionList.add(transaction);
+                                            String otherid = mDatabase.child(userId).push().getKey();
+                                            mDatabase.child(userId).child(otherid).setValue(transaction);
                                             feedItemsList.add(new FeedItem(transaction));
                                             if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
                                                 categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
@@ -139,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
                                         else{
                                             feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
                                             transactionList.add(transaction);
+                                            String otherid = mDatabase.child(userId).push().getKey();
+                                            mDatabase.child(userId).child(otherid).setValue(transaction);
                                             feedItemsList.add(new FeedItem(transaction));
                                             if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
                                                 categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());

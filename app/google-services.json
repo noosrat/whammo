@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "606552739653",
+    "firebase_url": "https://spent-bdda5.firebaseio.com",
+    "project_id": "spent-bdda5",
+    "storage_bucket": "spent-bdda5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606552739653:android:3896eb79122975e7",
+        "android_client_info": {
+          "package_name": "com.example.noosrat.budgettracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606552739653-13ffojo3m69hfcqq20vtjf0s0o8ara1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs22yoG5AuCC-L5psdcpEs_dl8uyvEeA4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

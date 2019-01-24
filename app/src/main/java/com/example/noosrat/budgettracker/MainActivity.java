@@ -175,20 +175,20 @@ public class MainActivity extends AppCompatActivity {
                                         Transaction transaction = new Transaction(bundledSMSes[m]);
                                         if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO  && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
                                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                                            String transactionId = mDatabase.child(userId).push().getKey();
+                                            String transactionId = mDatabase.push().getKey();
                                             transaction.setId(transactionId);
                                             transactionList.add(transaction);
-                                            mDatabase.child(userId).child(transactionId).setValue(transaction);
+                                            mDatabase.child(transactionId).setValue(transaction);
                                         }
                                     }
                                 } else {
                                     Transaction transaction = new Transaction(smsLst.get(k));
                                     if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
                                         transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                                        String transactionId = mDatabase.child(userId).push().getKey();
+                                        String transactionId = mDatabase.push().getKey();
                                         transaction.setId(transactionId);
                                         transactionList.add(transaction);
-                                        mDatabase.child(userId).child(transactionId).setValue(transaction);
+                                        mDatabase.child(transactionId).setValue(transaction);
                                     }
                                 }
                             }

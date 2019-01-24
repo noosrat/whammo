@@ -154,13 +154,14 @@ public class MainActivity extends AppCompatActivity {
 
                         ContentResolver cr = getContentResolver();
 
-                        ArrayList<SMS> smsLst = SpentUtilities.getSMSes(new Date(), cr, Telephony.Sms.Inbox.CONTENT_URI);
+                        Date lastUpdate = transactionList.get(0).getDate();
+                        ArrayList<SMS> smsLst = SpentUtilities.getSMSes(lastUpdate, cr, Telephony.Sms.Inbox.CONTENT_URI);
 
                         if (smsLst != null) {
 
                             MerchantHelper mh = new MerchantHelper();
 
-                            for (int k = 0; k < smsLst.size(); k++) {
+                            for (int k = smsLst.size()-1; k >= 0; k--) {
                                 Log.i("orig sms", smsLst.get(k).getMessage());
                                 if (SpentUtilities.isBundledSms(smsLst.get(k).getMessage())) {
                                     SMS[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));

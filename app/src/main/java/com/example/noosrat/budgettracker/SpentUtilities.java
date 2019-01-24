@@ -83,7 +83,8 @@ public class SpentUtilities {
 
         Date monthStart = calendar.getTime();
 
-        long millis = monthStart.getTime();
+        //long millis = monthStart.getTime();
+        long millis = date.getTime();
 
 
         Cursor c = cr.query(uri, // Official CONTENT_URI from docs

@@ -28,6 +28,7 @@ public class Transaction {
     static final int CARD_TYPE_CREDIT = 202;
     static final int CARD_TYPE_NOCARD = 203;
 
+    String id;
     int transactionType;
     String amount;
     String recipient;
@@ -144,6 +145,10 @@ public class Transaction {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAmount() {

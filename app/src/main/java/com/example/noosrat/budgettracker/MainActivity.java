@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.Telephony;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,11 @@ import com.example.noosrat.budgettracker.POJO.Merchant.Merchant;
 import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 import com.example.noosrat.budgettracker.Utilities.MerchantHelper;
 import com.example.noosrat.budgettracker.Utilities.TimeAgo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference mDatabase;
     String userId;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        signInAnonymously();
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
@@ -59,6 +70,36 @@ public class MainActivity extends AppCompatActivity {
         SpentSingleton.categoryMap.put("Lifestyle", new Category("Lifestyle","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Lifestyle.png?alt=media&token=b6a08f88-b980-4ed4-b745-2c0955f6837d", "#00E2CC", 2000));
         SpentSingleton.categoryMap.put("Phone", new Category("Phone","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Phone.png?alt=media&token=e9805a87-bdc0-49cf-9903-fddb23f4d14c", "#808080", 1000));
         SpentSingleton.categoryMap.put("Other", new Category("Other","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Other.png?alt=media&token=6850125d-909a-4c65-a701-fa514a9a057d", "#BCBCBC", 1));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+    }
+
+    private void signInAnonymously() {
+        // [START signin_anonymously]
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("user sign in", "signInAnonymously:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("user sign in", "signInAnonymously:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
+                        }
+                    }
+                });
+        // [END signin_anonymously]
     }
 
     public void onContinueClicked(View view) {

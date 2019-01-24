@@ -68,6 +68,49 @@ public class SpentUtilities {
             return sms_list;
 
     }
+
+    public static ArrayList<SMS> getSMSes(ContentResolver cr, Uri uri){
+
+
+        ArrayList<SMS> lstSms = new ArrayList<SMS>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date monthStart = calendar.getTime();
+
+        long millis = monthStart.getTime();
+
+        Cursor c = cr.query(uri, // Official CONTENT_URI from docs
+                new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
+                "date > ? AND (body LIKE ? OR body LIKE ?)",
+                new String[] {"" + millis, "ABSA:%", "FNB%" },
+                Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
+
+        int totalSMS = c.getCount();
+
+        if (c.moveToFirst()) {
+
+            for (int i = 0; i < totalSMS; i++) {
+                lstSms.add(new SMS(c.getString(BODY), new Date(Long.parseLong( c.getString(DATE)))));
+
+                c.moveToNext();
+
+
+            }
+        } else {
+            Log.i("ERROR: ","You have no SMS in Inbox");
+        }
+        c.close();
+
+
+
+        return lstSms;
+    }
     
     public static ArrayList<SMS> getSMSes(Date date, ContentResolver cr, Uri uri){
 

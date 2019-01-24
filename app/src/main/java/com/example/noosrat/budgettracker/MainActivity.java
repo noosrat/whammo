@@ -154,8 +154,13 @@ public class MainActivity extends AppCompatActivity {
 
                         ContentResolver cr = getContentResolver();
 
-                        Date lastUpdate = transactionList.get(0).getDate();
-                        ArrayList<SMS> smsLst = SpentUtilities.getSMSes(lastUpdate, cr, Telephony.Sms.Inbox.CONTENT_URI);
+                        ArrayList<SMS> smsLst;
+                        if (transactionList.size() > 0) {
+                            Date lastUpdate = transactionList.get(0).getDate();
+                            smsLst = SpentUtilities.getSMSes(lastUpdate, cr, Telephony.Sms.Inbox.CONTENT_URI);
+                        } else {
+                            smsLst = SpentUtilities.getSMSes(cr, Telephony.Sms.Inbox.CONTENT_URI);
+                        }
 
                         if (smsLst != null) {
 

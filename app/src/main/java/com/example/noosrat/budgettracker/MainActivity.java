@@ -28,8 +28,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     String userId;
     private FirebaseAuth mAuth;
 
+    private ArrayList<Transaction> transactionList;
+    private ArrayList<FeedItem> feedItemsList;
+    private HashMap<String, Float> categorySummaryMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        transactionList = new ArrayList<>();
+        feedItemsList = new ArrayList<>();
+        categorySummaryMap = new HashMap<>();
+
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         signInAnonymously();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
-
 
 
         SpentSingleton.categoryMap.put("Eating Out", new Category("Eating Out","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Eating%20Out.png?alt=media&token=b5e8bdc3-b932-42ac-9987-d4806404c30f", "#ECEC45", 10000));
@@ -89,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("user sign in", "signInAnonymously:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userId = user.getUid();
-                            //updateUI(user);
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("user sign in", "signInAnonymously:failure", task.getException());
@@ -101,6 +108,27 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         // [END signin_anonymously]
+    }
+
+    private void updateUI(FirebaseUser user) {
+        userId = user.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("users/"+userId);
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    Transaction transaction = childSnapshot.getValue(Transaction.class);
+                    transactionList.add(transaction);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // ...
+            }
+        });
     }
 
     public void onContinueClicked(View view) {
@@ -121,10 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-
-                    ArrayList<Transaction> transactionList = new ArrayList<>();
-                    ArrayList<FeedItem> feedItemsList = new ArrayList<>();
-                    HashMap<String, Float> categorySummaryMap = new HashMap<>();
 
                     if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
 
@@ -149,12 +173,6 @@ public class MainActivity extends AppCompatActivity {
                                             transaction.setId(transactionId);
                                             transactionList.add(transaction);
                                             mDatabase.child(userId).child(transactionId).setValue(transaction);
-                                            if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
-                                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
-                                            }
-                                            else{
-                                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
-                                            }
                                         }
                                     }
                                 } else {
@@ -165,28 +183,28 @@ public class MainActivity extends AppCompatActivity {
                                         transaction.setId(transactionId);
                                         transactionList.add(transaction);
                                         mDatabase.child(userId).child(transactionId).setValue(transaction);
-                                        if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
-                                            categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
-                                        }
-                                        else{
-                                            categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
-                                        }
                                     }
                                 }
                             }
+                        }
 
-                            String today = "";
+                        String today = "";
 
-                            for (Transaction transaction: transactionList) {
-                                if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
-                                    feedItemsList.add(new FeedItem(transaction));
-                                }
-                                else{
-                                    feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
-                                    feedItemsList.add(new FeedItem(transaction));
+                        for (Transaction transaction: transactionList) {
+                            if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
+                                feedItemsList.add(new FeedItem(transaction));
+                            }
+                            else{
+                                feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
+                                feedItemsList.add(new FeedItem(transaction));
 
-                                    today = TimeAgo.getTimeAgo(transaction.getDate());
-                                }
+                                today = TimeAgo.getTimeAgo(transaction.getDate());
+                            }
+
+                            if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
+                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
+                            } else{
+                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
                             }
                         }
 

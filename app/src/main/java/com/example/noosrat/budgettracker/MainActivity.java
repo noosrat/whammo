@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.noosrat.budgettracker.POJO.Category;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<FeedItem> feedItemsList;
     private HashMap<String, Float> categorySummaryMap;
 
+    Button btncontinue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
+        btncontinue = findViewById(R.id.btnContinue);
+        btncontinue.setBackgroundColor(Color.GRAY);
+        btncontinue.setClickable(false);
 
         transactionList = new ArrayList<>();
         feedItemsList = new ArrayList<>();
@@ -115,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
         userId = user.getUid();
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users/"+userId);
+        Log.w("user sign in", "transactionList: "+transactionList.size());
+        Log.w("user sign in", "feedItemsList:"+feedItemsList.size());
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -123,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
                     Transaction transaction = childSnapshot.getValue(Transaction.class);
                     transactionList.add(transaction);
                 }
+                Log.w("user sign in", "completed fetching data");
+                Log.w("user sign in", "transactionList: "+transactionList.size());
+                Log.w("user sign in", "feedItemsList:"+feedItemsList.size());
+                btncontinue.setBackgroundColor(Color.GREEN);
+                btncontinue.setClickable(true);
             }
 
             @Override
@@ -157,13 +172,15 @@ public class MainActivity extends AppCompatActivity {
 
                         ArrayList<SMS> smsLst;
                         if (transactionList.size() > 0) {
-                            Date lastUpdate = transactionList.get(0).getDate();
+                            Date lastUpdate = transactionList.get(transactionList.size()-1).getDate();
                             smsLst = SpentUtilities.getSMSes(lastUpdate, cr, Telephony.Sms.Inbox.CONTENT_URI);
                         } else {
                             smsLst = SpentUtilities.getSMSes(cr, Telephony.Sms.Inbox.CONTENT_URI);
                         }
 
-                        if (smsLst != null) {
+                        Log.w("user sign in", "smsLst: "+smsLst.size());
+
+                        if (smsLst.size() > 0) {
 
                             MerchantHelper mh = new MerchantHelper();
 

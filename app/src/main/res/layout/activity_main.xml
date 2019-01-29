@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="casual"
-        android:textSize="40dp"
-        android:text="I'm Spent"
-        android:layout_centerInParent="true" />
 
-    <Button
-        android:id="@+id/btnContinue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:background="@color/colorPrimary"
-        android:onClick="onContinueClicked"
-        android:text="Get Started..."
-        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

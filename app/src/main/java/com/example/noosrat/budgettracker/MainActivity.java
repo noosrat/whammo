@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<FeedItem> feedItemsList;
     private HashMap<String, Float> categorySummaryMap;
 
-    Button btncontinue;
+    //Button btncontinue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        btncontinue = findViewById(R.id.btnContinue);
-        btncontinue.setBackgroundColor(Color.GRAY);
-        btncontinue.setClickable(false);
+        //btncontinue = findViewById(R.id.btnContinue);
+        //btncontinue.setBackgroundColor(Color.GRAY);
+        //btncontinue.setClickable(false);
 
         transactionList = new ArrayList<>();
         feedItemsList = new ArrayList<>();
@@ -136,8 +136,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("user sign in", "completed fetching data");
                 Log.w("user sign in", "transactionList: "+transactionList.size());
                 Log.w("user sign in", "feedItemsList:"+feedItemsList.size());
-                btncontinue.setBackgroundColor(Color.GREEN);
-                btncontinue.setClickable(true);
+                //btncontinue.setBackgroundColor(Color.GREEN);
+                //btncontinue.setClickable(true);
+
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.READ_SMS},
+                        1);
             }
 
             @Override

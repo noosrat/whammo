@@ -58,8 +58,16 @@ public class Transaction {
                 recipient = transaction.getReciepient();
                 card = transaction.getCard();
             }
-            else{
+            else if (this.bank.toUpperCase().equals("FNB")){
                 FNB transaction = new FNB(message);
+
+                transactionType = transaction.getTransactionType();
+                amount = transaction.getAmount();
+                recipient = transaction.getReciepient();
+                card = transaction.getCard();
+            }
+            else if (this.bank.toUpperCase().equals("STANDARD BANK")){
+                STANDARD transaction = new STANDARD(message);
 
                 transactionType = transaction.getTransactionType();
                 amount = transaction.getAmount();

@@ -132,8 +132,8 @@ public class SpentUtilities {
 
         Cursor c = cr.query(uri, // Official CONTENT_URI from docs
                 new String[] { Telephony.Sms.Inbox.BODY,  Telephony.Sms.Inbox.DATE}, // Select body text
-                "date > ? AND (body LIKE ? OR body LIKE ?)",
-                new String[] {"" + millis, "ABSA:%", "FNB%" },
+                "date > ? AND (body LIKE ? OR body LIKE ? OR body LIKE ?)",
+                new String[] {"" + millis, "ABSA:%", "FNB%", "Standard Bank:%" },
                 Telephony.Sms.Inbox.DEFAULT_SORT_ORDER); // Default sort order
 
         int totalSMS = c.getCount();

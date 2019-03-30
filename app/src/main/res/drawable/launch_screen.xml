@@ -2,9 +2,9 @@
     <!-- The background color, preferably the same as your normal theme -->
     <item android:drawable="@color/whamOrange"/>
     <!-- Your product logo - 144dp color version of your app icon -->
-    <item>
-        <bitmap
-            android:src="@drawable/ic_logo"
-            android:gravity="center"/>
-    </item>
+    <item
+        android:width="100dp"
+        android:height="100dp"
+        android:drawable="@drawable/ic_logo"
+        android:gravity="center"/>
 </layer-list>

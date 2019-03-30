@@ -24,7 +24,7 @@ public class PagerActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Fragment fragment;
-        toolbar.setTitle("Dashboard");
+        toolbar.hide();
         fragment = new DashboardFragment();
         loadFragment(fragment);
 
@@ -47,9 +47,6 @@ public class PagerActivity extends AppCompatActivity {
                     toolbar.setTitle("Transactions");
                     fragment = new FeedFragment();
                     loadFragment(fragment);
-                    return true;
-                case R.id.navigation_settings:
-                    toolbar.setTitle("Settings");
                     return true;
             }
             return false;

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackground"
     tools:context=".FeedFragment">
 
     <!--<com.robinhood.spark.SparkView
@@ -11,8 +12,11 @@
         android:layout_height="150dp"
         android:layout_below="@id/progressBarGroup" />-->
 
+    <include android:id="@+id/title_bar"
+        layout="@layout/balance_action_bar"/>
 
-    <RelativeLayout
+
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -64,11 +68,30 @@
             android:textSize="12sp"
             android:textColor="#000000"
             android:layout_marginEnd="12dp"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/balance_layout" />
+        android:background="@drawable/rectangle_round_corners"
+        android:layout_below="@id/title_bar"
+        android:layout_marginTop="-25dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+
+
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

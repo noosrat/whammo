@@ -53,15 +53,15 @@ public class FeedFragment extends Fragment {
 //        getSupportActionBar().setCustomView(R.layout.balance_action_bar);
 
         //sparkView = (SparkView) findViewById(R.id.sparkview);
-        TextView txtBalance = view.findViewById(R.id.balance);
-        TextView txtExpense = view.findViewById(R.id.total_expense);
+        //TextView txtBalance = view.findViewById(R.id.balance);
+        //TextView txtExpense = view.findViewById(R.id.total_expense);
 
         float expense = 0;
         expense = calculateExpenses(SpentSingleton.transactionList);
         float balance = BUDGET - expense;
 
-        txtExpense.setText(SpentSingleton.currencyFormat.format(expense));
-        txtBalance.setText(SpentSingleton.currencyFormat.format(balance));
+        //txtExpense.setText(SpentSingleton.currencyFormat.format(expense));
+        //txtBalance.setText(SpentSingleton.currencyFormat.format(balance));
 
         RecyclerView rv = view.findViewById(R.id.recyclerView);
 

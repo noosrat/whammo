@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -97,7 +98,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
-        public CardView cardView;
+        public RelativeLayout cardView;
         private TextView tvDescription;
         private TextView tvAmount;
         private TextView tvDate;
@@ -106,7 +107,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         TransactionViewHolder(View itemView) {
             super(itemView);
 
-            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            cardView = (RelativeLayout) itemView.findViewById(R.id.cardView);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             tvAmount = (TextView) itemView.findViewById(R.id.tvAmount);
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);

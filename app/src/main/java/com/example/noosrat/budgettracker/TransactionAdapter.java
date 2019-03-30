@@ -15,7 +15,9 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.noosrat.budgettracker.Singleton.SpentSingleton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -49,9 +51,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(final TransactionViewHolder transactionViewHolder, final int position) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm", SpentSingleton.myLocale);
+
         if (getItemViewType(position) == FeedItem.TYPE_ITEM_TRANSACTION){
             transactionViewHolder.tvAmount.setText((String) transactionArrayList.get(position).getTransaction().getAmount());
-            transactionViewHolder.tvDate.setText((String) transactionArrayList.get(position).getTransaction().getDate().toString());
+            transactionViewHolder.tvDate.setText((String) sdf.format( transactionArrayList.get(position).getTransaction().getDate()));
             transactionViewHolder.tvDescription.setText((String) transactionArrayList.get(position).getTransaction().getMerchant().getName());
             if (transactionArrayList.get(position).getTransaction().getMerchant().getIcon() != null){
                 Glide.with(context)

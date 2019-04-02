@@ -36,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -44,6 +46,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     DatabaseReference mDatabase;
+    DatabaseReference mErrorTable;
     String userId;
     private FirebaseAuth mAuth;
 
@@ -126,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         Log.w("user sign in", "transactionList: "+transactionList.size());
         Log.w("user sign in", "feedItemsList:"+feedItemsList.size());
 
+        mErrorTable = FirebaseDatabase.getInstance().getReference("errors/");
+
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -194,24 +199,49 @@ public class MainActivity extends AppCompatActivity {
                                     SMS[] bundledSMSes = SpentUtilities.smsCleaner(smsLst.get(k));
 
                                     for (int m = 0; m < bundledSMSes.length; m++) {
-                                        Transaction transaction = new Transaction(bundledSMSes[m]);
-                                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO  && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
+
+                                        try {
+                                            Transaction transaction = new Transaction(bundledSMSes[m]);
+
+                                            if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO  && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
+                                                transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
+                                                String transactionId = mDatabase.push().getKey();
+                                                transaction.setId(transactionId);
+                                                transactionList.add(transaction);
+                                                mDatabase.child(transactionId).setValue(transaction);
+                                            }
+                                        } catch (Exception e) {
+                                            String errorId = mDatabase.push().getKey();
+
+                                            StringWriter sw = new StringWriter();
+                                            e.printStackTrace(new PrintWriter(sw));
+                                            String exceptionAsString = sw.toString();
+
+                                            bundledSMSes[m].setProblem(exceptionAsString);
+                                            mErrorTable.child(errorId).setValue(bundledSMSes[m]);
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } else {
+                                    try {
+                                        Transaction transaction = new Transaction(smsLst.get(k));
+                                        if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
                                             transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
                                             String transactionId = mDatabase.push().getKey();
                                             transaction.setId(transactionId);
                                             transactionList.add(transaction);
                                             mDatabase.child(transactionId).setValue(transaction);
                                         }
-                                    }
-                                } else {
-                                    Transaction transaction = new Transaction(smsLst.get(k));
-                                    if (transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_TRANSFER && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_DEPOSIT && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_INFO && transaction.getTransactionType() != Transaction.TRANSACTION_TYPE_UNKNOWN) {
-                                        transaction.setMerchant(mh.getMerchant(transaction.getRecipient()));
-                                        String transactionId = mDatabase.push().getKey();
-                                        transaction.setId(transactionId);
-                                        transactionList.add(transaction);
-                                        mDatabase.child(transactionId).setValue(transaction);
-                                    }
+                                    } catch (Exception e) {
+                                        String errorId = mDatabase.push().getKey();
+
+                                        StringWriter sw = new StringWriter();
+                                        e.printStackTrace(new PrintWriter(sw));
+                                        String exceptionAsString = sw.toString();
+
+                                        smsLst.get(k).setProblem(exceptionAsString);
+                                        mErrorTable.child(errorId).setValue(smsLst.get(k));
+                                        e.printStackTrace();                                    }
                                 }
                             }
                         }

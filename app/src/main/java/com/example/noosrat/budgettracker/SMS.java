@@ -6,6 +6,7 @@ public class SMS {
 
     private String message;
     private Date date;
+    private String problem;
 
     public SMS() {
     }
@@ -21,5 +22,13 @@ public class SMS {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getProblem() {
+        return problem;
+    }
+
+    public void setProblem(String problem) {
+        this.problem = problem;
     }
 }

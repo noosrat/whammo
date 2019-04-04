@@ -47,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference mDatabase;
     DatabaseReference mErrorTable;
+    DatabaseReference mMerchants;
     String userId;
     private FirebaseAuth mAuth;
 
     private ArrayList<Transaction> transactionList;
     private ArrayList<FeedItem> feedItemsList;
     private HashMap<String, Float> categorySummaryMap;
+    private ArrayList<Merchant> merchantList;
+
 
     //Button btncontinue;
 
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         transactionList = new ArrayList<>();
         feedItemsList = new ArrayList<>();
         categorySummaryMap = new HashMap<>();
+        merchantList = new ArrayList<>();
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -131,22 +135,44 @@ public class MainActivity extends AppCompatActivity {
 
         mErrorTable = FirebaseDatabase.getInstance().getReference("errors/");
 
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mMerchants = FirebaseDatabase.getInstance().getReference("merchants/");
+
+        mMerchants.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    Transaction transaction = childSnapshot.getValue(Transaction.class);
-                    transactionList.add(transaction);
-                }
-                Log.w("user sign in", "completed fetching data");
-                Log.w("user sign in", "transactionList: "+transactionList.size());
-                Log.w("user sign in", "feedItemsList:"+feedItemsList.size());
-                //btncontinue.setBackgroundColor(Color.GREEN);
-                //btncontinue.setClickable(true);
+                    Merchant merchant = childSnapshot.getValue(Merchant.class);
 
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.READ_SMS},
-                        1);
+                    Log.i("merchantsss", childSnapshot.getKey());
+                    merchantList.add(merchant);
+                }
+
+                SpentSingleton.merchantList = merchantList;
+
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            Transaction transaction = childSnapshot.getValue(Transaction.class);
+                            transactionList.add(transaction);
+                        }
+                        Log.w("user sign in", "completed fetching data");
+                        Log.w("user sign in", "transactionList: "+transactionList.size());
+                        Log.w("user sign in", "feedItemsList:"+feedItemsList.size());
+                        //btncontinue.setBackgroundColor(Color.GREEN);
+                        //btncontinue.setClickable(true);
+
+                        ActivityCompat.requestPermissions(MainActivity.this,
+                                new String[]{Manifest.permission.READ_SMS},
+                                1);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // ...
+                    }
+                });
+
             }
 
             @Override

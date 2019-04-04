@@ -10,6 +10,10 @@ public class Category {
     public Category() {
     }
 
+    public Category(String name) {
+        this.name = name;
+    }
+
     public Category(String name, int icon, String colour) {
         this.name = name;
         this.icon = icon;

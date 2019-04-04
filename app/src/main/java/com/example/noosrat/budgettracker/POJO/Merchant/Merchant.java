@@ -23,6 +23,7 @@ public class Merchant {
 
     private String name;
     private String icon;
+    private String keyword;
     private Category category;
 
     public Merchant() {
@@ -40,17 +41,34 @@ public class Merchant {
         calculateCategory(category);
     }
 
+    public Merchant(String name, String icon, String keyword, Category category) {
+        this.name = name;
+        this.icon = icon;
+        this.keyword = keyword;
+        this.category = category;
+
+
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getIcon() {
         return icon;
     }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+
+
 
     @Exclude
     public TextDrawable getIconBitmap() {
@@ -66,6 +84,20 @@ public class Merchant {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+
 
     private void calculateCategory(int category){
         if (category == CATEGORY_EATING_OUT)
@@ -94,11 +126,5 @@ public class Merchant {
             this.category = new Category("Other",R.drawable.ic_category_other, "#393D3F");
     }
 
-    public Category getCategory() {
-        return category;
-    }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 }

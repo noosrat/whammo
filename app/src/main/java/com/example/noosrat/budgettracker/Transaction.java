@@ -47,7 +47,7 @@ public class Transaction {
         this.date = sms.getDate();
         int pos = message.indexOf(":");
         if (pos>-1)
-            this.bank = message.substring(0, pos);
+            this.bank = message.substring(0, pos).trim();
 
         if (this.bank != null){
             if (this.bank.toUpperCase().equals("ABSA")){

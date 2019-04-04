@@ -78,18 +78,18 @@ public class MainActivity extends AppCompatActivity {
         signInAnonymously();
 
 
-        SpentSingleton.categoryMap.put("Eating Out", new Category("Eating Out","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Eating%20Out.png?alt=media&token=b5e8bdc3-b932-42ac-9987-d4806404c30f", "#ECEC45", 10000));
-        SpentSingleton.categoryMap.put("Entertainment", new Category("Entertainment","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Entertainment.png?alt=media&token=0103d4cc-7155-44e0-ba59-e753928f8d1d", "#FF9B00", 5000));
-        SpentSingleton.categoryMap.put("Groceries", new Category("Groceries","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Groceries.png?alt=media&token=f050d6c7-48b5-4d42-8a5a-065ae22f2385", "#23BC57", 20000));
-        SpentSingleton.categoryMap.put("Insurance", new Category("Insurance","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Insurance.png?alt=media&token=0cb39a7f-a221-41ce-8c30-fe0412c1d05b", "#A260C1", 40000));
-        SpentSingleton.categoryMap.put("Rent", new Category("Rent","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Rent.png?alt=media&token=fd2e626f-c284-4a61-bdb9-f4c883c7ecaa", "#F57BAE", 20000));
-        SpentSingleton.categoryMap.put("Petrol",new Category("Petrol","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Petrol.png?alt=media&token=2779a4fb-ca4b-4cd4-8636-e584d1dfafaf", "#8FD239", 3000));
-        SpentSingleton.categoryMap.put("Travel", new Category("Travel","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Travel.png?alt=media&token=ac040554-3bb7-40e8-9d3f-83e807a617ee", "#D23A3A", 10000));
-        SpentSingleton.categoryMap.put("Clothing", new Category("Clothing","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Clothing.png?alt=media&token=0b36c42b-bc94-4a1e-b8ec-38a90cc8a399", "#D23979", 3000));
-        SpentSingleton.categoryMap.put("Car", new Category("Car","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Car.png?alt=media&token=cff056a5-c523-4b34-b6b0-520f5aba7658", "#3952D2", 5000));
-        SpentSingleton.categoryMap.put("Lifestyle", new Category("Lifestyle","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Lifestyle.png?alt=media&token=b6a08f88-b980-4ed4-b745-2c0955f6837d", "#00E2CC", 2000));
-        SpentSingleton.categoryMap.put("Phone", new Category("Phone","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Phone.png?alt=media&token=e9805a87-bdc0-49cf-9903-fddb23f4d14c", "#808080", 1000));
-        SpentSingleton.categoryMap.put("Other", new Category("Other","https://firebasestorage.googleapis.com/v0/b/spent-bdda5.appspot.com/o/Other.png?alt=media&token=6850125d-909a-4c65-a701-fa514a9a057d", "#BCBCBC", 1));
+        SpentSingleton.categoryMap.put("Eating Out", new Category("Eating Out",R.drawable.ic_category_eating, "#93B93F", 10000));
+        SpentSingleton.categoryMap.put("Entertainment", new Category("Entertainment",R.drawable.ic_category_entertainment, "#93B93F", 5000));
+        SpentSingleton.categoryMap.put("Groceries", new Category("Groceries",R.drawable.ic_category_groceries, "#26B1C8", 20000));
+        SpentSingleton.categoryMap.put("Insurance", new Category("Insurance",R.drawable.ic_category_insurance, "#ED6A5A", 40000));
+        SpentSingleton.categoryMap.put("Rent", new Category("Rent",R.drawable.ic_category_rent, "#C54A86", 20000));
+        SpentSingleton.categoryMap.put("Petrol",new Category("Petrol",R.drawable.ic_category_petrol, "#393D3F", 3000));
+        SpentSingleton.categoryMap.put("Travel", new Category("Travel",R.drawable.ic_category_travel, "#FFC548", 10000));
+        SpentSingleton.categoryMap.put("Clothing", new Category("Clothing",R.drawable.ic_category_clothing, "#FFC548", 3000));
+        SpentSingleton.categoryMap.put("Car", new Category("Car",R.drawable.ic_category_car, "#26B1C8", 5000));
+        SpentSingleton.categoryMap.put("Lifestyle", new Category("Lifestyle",R.drawable.ic_category_lifestyle, "#C54A86", 2000));
+        SpentSingleton.categoryMap.put("Phone", new Category("Phone",R.drawable.ic_category_phone, "#ED6A5A", 1000));
+        SpentSingleton.categoryMap.put("Other", new Category("Other",R.drawable.ic_category_other, "#393D3F", 1));
     }
 
     @Override
@@ -249,22 +249,25 @@ public class MainActivity extends AppCompatActivity {
                         String today = "";
 
                         Collections.reverse(transactionList);
+                        Date budgetStartDate = SpentUtilities.getMonthStart();
 
                         for (Transaction transaction: transactionList) {
-                            if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
-                                feedItemsList.add(new FeedItem(transaction));
-                            }
-                            else{
-                                feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
-                                feedItemsList.add(new FeedItem(transaction));
+                            if (transaction.getDate().after(budgetStartDate)) {
+                                if (TimeAgo.getTimeAgo(transaction.getDate()).equals(today)) {
+                                    feedItemsList.add(new FeedItem(transaction));
+                                }
+                                else{
+                                    feedItemsList.add(new FeedItem(TimeAgo.getTimeAgo(transaction.getDate())));
+                                    feedItemsList.add(new FeedItem(transaction));
 
-                                today = TimeAgo.getTimeAgo(transaction.getDate());
-                            }
+                                    today = TimeAgo.getTimeAgo(transaction.getDate());
+                                }
 
-                            if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
-                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
-                            } else{
-                                categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
+                                if (categorySummaryMap.get(transaction.getMerchant().getCategory().getName()) == null) {
+                                    categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), transaction.getNumberAmount());
+                                } else{
+                                    categorySummaryMap.put(transaction.getMerchant().getCategory().getName(), categorySummaryMap.get(transaction.getMerchant().getCategory().getName())+transaction.getNumberAmount());
+                                }
                             }
                         }
 
@@ -275,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     Intent i = new Intent(MainActivity.this, PagerActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     startActivity(i);
                 } else {

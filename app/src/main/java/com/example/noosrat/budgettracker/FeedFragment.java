@@ -55,6 +55,9 @@ public class FeedFragment extends Fragment {
         //sparkView = (SparkView) findViewById(R.id.sparkview);
         //TextView txtBalance = view.findViewById(R.id.balance);
         //TextView txtExpense = view.findViewById(R.id.total_expense);
+        TextView title = view.findViewById(R.id.balance_title);
+
+        title.setText("Transactions");
 
         float expense = 0;
         expense = calculateExpenses(SpentSingleton.transactionList);

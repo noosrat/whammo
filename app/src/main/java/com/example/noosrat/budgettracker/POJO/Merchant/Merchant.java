@@ -3,6 +3,7 @@ package com.example.noosrat.budgettracker.POJO.Merchant;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.noosrat.budgettracker.POJO.Category;
+import com.example.noosrat.budgettracker.R;
 import com.google.firebase.database.Exclude;
 
 public class Merchant {
@@ -29,7 +30,7 @@ public class Merchant {
 
     public Merchant(String name) {
         this.name = name;
-        this.category = new Category("Other","", "");
+        this.category = new Category("Other", R.drawable.ic_category_other, "#393D3F");
     }
 
     public Merchant(String name, String url, int category) {
@@ -68,29 +69,29 @@ public class Merchant {
 
     private void calculateCategory(int category){
         if (category == CATEGORY_EATING_OUT)
-            this.category = new Category("Eating Out","", "");
+            this.category = new Category("Eating Out",R.drawable.ic_category_eating, "#93B93F");
         else if (category == CATEGORY_ENTERTAINMENT)
-            this.category = new Category("Entertainment","", "");
+            this.category = new Category("Entertainment",R.drawable.ic_category_entertainment, "#93B93F");
         else if (category == CATEGORY_GROCERIES)
-            this.category = new Category("Groceries","", "");
+            this.category = new Category("Groceries",R.drawable.ic_category_groceries, "#26B1C8");
         else if (category == CATEGORY_INSURANCE)
-            this.category = new Category("Insurance","", "");
+            this.category = new Category("Insurance",R.drawable.ic_category_insurance, "#ED6A5A");
         else if (category == CATEGORY_RENT)
-            this.category = new Category("Rent","", "");
+            this.category = new Category("Rent",R.drawable.ic_category_rent, "#C54A86");
         else if (category == CATEGORY_PETROL)
-            this.category = new Category("Petrol","", "");
+            this.category = new Category("Petrol",R.drawable.ic_category_petrol, "#393D3F");
         else if (category == CATEGORY_TRAVEL)
-            this.category = new Category("Travel","", "");
+            this.category = new Category("Travel",R.drawable.ic_category_travel, "#FFC548");
         else if (category == CATEGORY_CLOTHING)
-            this.category = new Category("Clothing","", "");
+            this.category = new Category("Clothing",R.drawable.ic_category_clothing, "#FFC548");
         else if (category == CATEGORY_CAR)
-            this.category = new Category("Car","", "");
+            this.category = new Category("Car",R.drawable.ic_category_car, "#26B1C8");
         else if (category == CATEGORY_LIFESTYLE)
-            this.category = new Category("Lifestyle","", "");
+            this.category = new Category("Lifestyle",R.drawable.ic_category_lifestyle, "#C54A86");
         else if (category == CATEGORY_PHONE)
-            this.category = new Category("Phone","", "");
+            this.category = new Category("Phone",R.drawable.ic_category_phone, "#ED6A5A");
         else
-            this.category = new Category("Other","", "");
+            this.category = new Category("Other",R.drawable.ic_category_other, "#393D3F");
     }
 
     public Category getCategory() {

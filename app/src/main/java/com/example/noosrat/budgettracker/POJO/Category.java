@@ -3,20 +3,20 @@ package com.example.noosrat.budgettracker.POJO;
 public class Category {
 
     private String name;
-    private String icon;
+    private int icon;
     private String colour;
     private int budget;
 
     public Category() {
     }
 
-    public Category(String name, String icon, String colour) {
+    public Category(String name, int icon, String colour) {
         this.name = name;
         this.icon = icon;
         this.colour = colour;
     }
 
-    public Category(String name, String icon, String colour, int budget) {
+    public Category(String name, int icon, String colour, int budget) {
         this.name = name;
         this.icon = icon;
         this.colour = colour;
@@ -31,11 +31,11 @@ public class Category {
         this.name = name;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 

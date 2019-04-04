@@ -41,12 +41,10 @@ public class PagerActivity extends AppCompatActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_dashboard:
-                    toolbar.setTitle("Dashboard");
                     fragment = new DashboardFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_feed:
-                    toolbar.setTitle("Transactions");
                     fragment = new FeedFragment();
                     loadFragment(fragment);
                     return true;

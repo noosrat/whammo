@@ -57,9 +57,13 @@ public class DashboardFragment extends Fragment {
         TextView txtExpensePercentage = view.findViewById(R.id.percentage);
         TextView txtDaysLeft = view.findViewById(R.id.days_left);
         TextView txtPeriod = view.findViewById(R.id.time_period);
+        TextView title = view.findViewById(R.id.balance_title);
+
+        title.setText("Dashboard");
+
         float expense = 0;
 
-        expense = calculateExpenses(SpentSingleton.transactionList);
+        expense = calculateExpenses(SpentSingleton.feedItemsList);
         float balance = BUDGET - expense;
 
         txtExpense.setText(SpentSingleton.currencyFormat.format(expense));
@@ -98,14 +102,16 @@ public class DashboardFragment extends Fragment {
         rv.setAdapter(adapter);
     }
 
-    public float calculateExpenses(ArrayList<Transaction> transactionList) {
+    public float calculateExpenses(ArrayList<FeedItem> transactionList) {
 
         float sum = 0;
 
         for (int i = 0; i < transactionList.size(); i++) {
-            if (transactionList.get(i)!=null){
-                sum = sum + transactionList.get(i).getNumberAmount();
-                sumDataList.add(15000 - sum);
+            if (transactionList.get(i).itemViewType == FeedItem.TYPE_ITEM_TRANSACTION) {
+                if (transactionList.get(i)!=null){
+                    sum = sum + transactionList.get(i).getTransaction().getNumberAmount();
+                    sumDataList.add(15000 - sum);
+                }
             }
 
         }

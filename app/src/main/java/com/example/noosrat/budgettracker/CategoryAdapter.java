@@ -58,6 +58,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         categoryViewHolder.prbExpense.setMax(SpentSingleton.categoryMap.get(categories.get(position)).getBudget());
         categoryViewHolder.prbExpense.setProgress(categorySummaryMap.get(categories.get(position)).intValue());
+        categoryViewHolder.prbExpense.getProgressDrawable().setColorFilter(Color.parseColor(SpentSingleton.categoryMap.get(categories.get(position)).getColour()),android.graphics.PorterDuff.Mode.MULTIPLY);
+
     }
 
     @Override

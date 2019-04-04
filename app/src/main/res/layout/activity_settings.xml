@@ -1,11 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackground"
     tools:context=".SettingsActivity">
 
-    <include layout="@layout/balance_action_bar"/>
 
-</android.support.constraint.ConstraintLayout>
+
+    <include android:id="@+id/title_bar"
+        layout="@layout/balance_action_bar"/>
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle_round_corners"
+        android:layout_below="@id/title_bar"
+        android:layout_marginTop="-25dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+
+
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        >
+
+        <TextView
+            android:id="@+id/budgetSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Budget"
+            android:fontFamily="@font/bariol_bold"
+            android:textSize="18sp"
+            android:layout_alignParentTop="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transaction_outline"
+            android:layout_below="@id/budgetSection"
+            >
+
+            <TextView
+                android:id="@+id/budgetLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/bariol_regular"
+                android:text="Total Budget"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/totalBudget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_below="@id/budgetLabel"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
